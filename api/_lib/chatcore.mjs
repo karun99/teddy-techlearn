@@ -7,6 +7,7 @@ import { retrieve, groundingContext, isGrounded } from './rag.mjs';
 import { buildSystemPrompt, summarizeLearnerContext } from './persona.mjs';
 import { callWithFallback } from './router.mjs';
 import { learnerContext, getMemory } from './memory.mjs';
+import { getAiConfig } from './config.mjs';
 
 const CRISIS = /(i.*(want|feel|think).*(die|kill|end my|suicid)|suicid|self.?harm|end my life|no point living)/i;
 
@@ -83,7 +84,7 @@ function keywordCheck(answer, hits) {
   return unique.length ? matched / unique.length >= 0.15 : true;
 }
 
-export async function answerChat({ message, pageContext, learnerId, provider, history = [] }) {
+export async function answerChat({ message, pageContext, learnerId, provider, history = [], aiConfig } = {}) {
   const q = String(message || '').trim();
   if (!q) return { reply: 'Ask me anything about your M.Tech CSE syllabus! 🧸', mode: 'idle', sources: [], verified: true };
 
@@ -98,6 +99,17 @@ export async function answerChat({ message, pageContext, learnerId, provider, hi
   let mem = {};
   try { mem = await learnerContext(learnerId); } catch { /* memory optional */ }
   const learnerSummary = summarizeLearnerContext(mem);
+
+  // Per-user AI config: stored in the learner graph, overridable per request
+  // (aiConfig may carry a BYOK apiKey that is not persisted anywhere).
+  let stored = {};
+  try { stored = await getAiConfig(learnerId); } catch { /* config optional */ }
+  const cfg = { ...stored, ...(aiConfig || {}) };
+  const prefer = cfg.provider || provider || undefined;
+  const apiKey = typeof cfg.apiKey === 'string' && cfg.apiKey.trim() ? cfg.apiKey.trim() : undefined;
+  const apiKeyFor = prefer || undefined;
+  const temperature = clampNum(cfg.temperature, 0, 1, 0.4);
+  const maxTokens = clampNum(cfg.maxTokens, 64, 4096, 900);
 
   const systemPrompt = buildSystemPrompt({
     pageContext: { ...(ctx || {}), subjectId: ctx?.subjectId || '' },
@@ -115,7 +127,9 @@ export async function answerChat({ message, pageContext, learnerId, provider, hi
   let providerUsed = null;
   let text;
   try {
-    const out = await callWithFallback(messagesArr, { prefer: provider || undefined, maxTokens: 900 });
+    const out = await callWithFallback(messagesArr, {
+      prefer, model: stringVal(cfg.model) || undefined, temperature, maxTokens, apiKey, apiKeyFor,
+    });
     text = out.text;
     mode = 'llm';
     providerUsed = out.provider;
@@ -151,6 +165,16 @@ export async function answerChat({ message, pageContext, learnerId, provider, hi
     sources: hits.map((h) => ({ page: h.page, title: h.title })),
     topHit: hits[0] ? { page: hits[0].page, title: hits[0].title, type: hits[0].type } : null,
   };
+}
+
+function stringVal(v) {
+  return typeof v === 'string' && v.trim() ? v.trim() : '';
+}
+
+function clampNum(v, min, max, dflt) {
+  const n = Number(v);
+  if (!Number.isFinite(n)) return dflt;
+  return Math.min(max, Math.max(min, n));
 }
 
 async function persistInteraction(learnerId, question, answer, ctx, mode, provider) {

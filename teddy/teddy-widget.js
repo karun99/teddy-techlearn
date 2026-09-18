@@ -7,7 +7,8 @@
   'use strict';
 
   /* ---------------- configuration ---------------- */
-  const LS = { learner: 'tw_learner_id', provider: 'tw_provider', lang: 'tw_lang', dismiss: 'tw_dismissed_session' };
+  const LS = { learner: 'tw_learner_id', provider: 'tw_provider', lang: 'tw_lang', dismiss: 'tw_dismissed_session', aiCfg: 'tw_aiconfig', byok: 'tw_byok_keys' };
+  const BYOK_PROVIDERS = ['gemini', 'openrouter', 'openai', 'anthropic', 'groq']; // ollama is local, no key
 
   const OFF = window.location.protocol === 'file:';
   const API = OFF ? null : (window.location.origin + '/api');
@@ -41,6 +42,22 @@
   }
   function lang() { return stGet(LS.lang) || 'en'; }
   function isAi() { return navigator.userAgent.includes('AI') || navigator.userAgent.includes('GPTBot'); }
+
+  /* ---- per-user AI configuration (AI-CONFIG) ---- */
+  function defaultAiCfg() { return { provider: '', model: '', temperature: 0.4, maxTokens: 900 }; }
+  function readAiCfg() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(LS.aiCfg) || 'null');
+      if (raw && typeof raw === 'object') return { ...defaultAiCfg(), ...raw };
+    } catch { /* fall through */ }
+    return defaultAiCfg();
+  }
+  function writeAiCfg(cfg) { try { localStorage.setItem(LS.aiCfg, JSON.stringify(cfg)); } catch { /* ignore */ } }
+  function readKeys() {
+    try { return JSON.parse(localStorage.getItem(LS.byok) || '{}') || {}; } catch { return {}; }
+  }
+  function writeKeys(map) { try { localStorage.setItem(LS.byok, JSON.stringify(map)); } catch { /* ignore */ } }
+  function maskKey(k) { return k && k.length > 8 ? k.slice(0, 3) + '…' + k.slice(-4) : '(empty)'; }
 
   async function fetchJson(path, opts, timeoutMs = 70000) {
     const ctl = new AbortController();
@@ -126,6 +143,7 @@
   /* ---------------- state ---------------- */
   const state = {
     open: false, provider: '', status: 'off',
+    aiConfig: null,
     chat: { msgs: [], history: [], busy: false },
     quiz: { data: null, answers: {}, flags: new Set(), hints: 0, cur: 0, timer: null, remain: 0 },
     notes: { template: 'cornell', current: null },
@@ -174,14 +192,25 @@
     state.chat.busy = true;
     state.chat.history.push({ role: 'user', content: lang() === 'hi' ? msg + ' (respond in Hindi/Hinglish)' : msg });
     try {
+      const cfg = state.aiConfig || defaultAiCfg();
+      const activeProvider = cfg.provider || state.provider || '';
+      const keys = readKeys();
       const data = await fetchJson('/chat', {
         method: 'POST',
         body: JSON.stringify({
           message: msg,
           pageContext: CONTEXT,
           learnerId: learnerId(),
-          provider: state.provider || undefined,
+          provider: activeProvider,
           history: state.chat.history.slice(-14, -1),
+          aiConfig: {
+            provider: activeProvider,
+            model: cfg.model,
+            temperature: cfg.temperature,
+            maxTokens: cfg.maxTokens,
+            apiKey: activeProvider ? (keys[activeProvider] || '') : '',
+            apiKeyProvider: activeProvider,
+          },
         }),
       });
       const reply = data.reply || 'No reply.';
@@ -499,24 +528,126 @@
   }
 
   /* ---------------- settings ---------------- */
+  function providerOptions(includeOllama) {
+    const opts = [];
+    const keys = readKeys();
+    for (const p of state.providers || []) {
+      if (!includeOllama && p.key === 'ollama') continue;
+      const label = p.label + ' — ' +
+        (keys[p.key] ? 'your key (' + maskKey(keys[p.key]) + ')' : (p.available ? p.model : 'server has no key'));
+      opts.push({ key: p.key, label });
+    }
+    return opts;
+  }
+
   function renderSettings() {
     const strip = $('#twSettingsStrip');
     strip.innerHTML = '';
-    const row = el('div', 'tw-form');
-    row.style.cssText = 'padding:10px 14px;gap:8px;border-bottom:1px solid #e5e7eb';
-    const providerRow = el('div', 'tw-field');
-    providerRow.appendChild(el('label', '', 'AI provider'));
+    const wrap = el('div', 'tw-form');
+    wrap.style.cssText = 'padding:10px 14px;gap:8px;border-bottom:1px solid #e5e7eb';
+
+    const cfg = state.aiConfig || defaultAiCfg();
+
+    /* AI configuration (persisted per learner) */
+    wrap.appendChild(el('div', 'tw-hint', '⚙ AI configuration (saved to your learner profile)'));
+    const provRow = el('div', 'tw-field');
+    provRow.appendChild(el('label', '', 'AI provider'));
     const sel = el('select');
     sel.id = 'twProv';
     sel.appendChild(new Option('Auto (best available)', ''));
-    for (const p of state.providers || []) {
-      sel.appendChild(new Option(p.label + ' — ' + (p.available ? p.model : 'no key'), p.key));
-    }
-    sel.value = stGet(LS.provider);
-    sel.addEventListener('change', () => { stSet(LS.provider, sel.value); state.provider = sel.value === '' ? '' : sel.value; setStatus(true, 'provider: ' + (sel.value || 'auto')); });
-    providerRow.appendChild(sel);
-    row.appendChild(providerRow);
+    for (const o of providerOptions(true)) sel.appendChild(new Option(o.label, o.key));
+    sel.value = cfg.provider;
+    provRow.appendChild(sel);
+    wrap.appendChild(provRow);
 
+    const modelRow = el('div', 'tw-field');
+    modelRow.appendChild(el('label', '', 'Model (optional, overrides provider default)'));
+    const model = el('input');
+    model.id = 'twModel';
+    model.type = 'text';
+    model.placeholder = 'auto';
+    model.value = cfg.model || '';
+    modelRow.appendChild(model);
+    wrap.appendChild(modelRow);
+
+    const tempRow = el('div', 'tw-field');
+    tempRow.appendChild(el('label', '', 'Creativity (temperature)'));
+    const tempLbl = el('span', 'tw-hint', ' ' + cfg.temperature.toFixed(2));
+    const temp = el('input');
+    temp.id = 'twTemp';
+    temp.type = 'range';
+    temp.min = '0'; temp.max = '1'; temp.step = '0.05'; temp.value = String(cfg.temperature);
+    temp.addEventListener('input', () => { tempLbl.textContent = ' ' + Number(temp.value).toFixed(2); });
+    const mcRow = el('div', '');
+    mcRow.style.cssText = 'display:flex;align-items:center;gap:8px';
+    tempRow.appendChild(mcRow);
+    mcRow.appendChild(document.createElement('span')).appendChild(temp);
+    mcRow.appendChild(tempLbl);
+    wrap.appendChild(tempRow);
+
+    const btnRow = el('div', 'tw-btn-group');
+    const save = el('button', 'tw-btn tw-btn-sm tw-btn-primary', 'Save config');
+    const reset = el('button', 'tw-btn tw-btn-sm', 'Reset to defaults');
+    btnRow.appendChild(save); btnRow.appendChild(reset);
+    wrap.appendChild(btnRow);
+    sel.addEventListener('change', () => { state.aiConfig.provider = sel.value; });
+    save.addEventListener('click', () => saveAiCfg(sel.value, model.value, temp.value));
+    reset.addEventListener('click', () => resetAiCfg());
+    strip.appendChild(wrap);
+
+    /* Bring-your-own-key (browser only, never stored server-side) */
+    const byok = el('div', 'tw-form');
+    byok.style.cssText = 'padding:10px 14px;gap:8px;border-bottom:1px solid #e5e7eb';
+    byok.appendChild(el('div', 'tw-hint', '🔑 Bring your own API key (kept in this browser only)'));
+    const bRow = el('div', 'tw-field');
+    bRow.appendChild(el('label', '', 'Provider'));
+    const ksel = el('select');
+    ksel.id = 'twByokProv';
+    const provCfg = state.aiConfig || defaultAiCfg();
+    const kprovSel = provCfg.provider && BYOK_PROVIDERS.includes(provCfg.provider) ? provCfg.provider : 'openrouter';
+    for (const k of BYOK_PROVIDERS) ksel.appendChild(new Option(k, k));
+    ksel.value = kprovSel;
+    bRow.appendChild(ksel);
+    const kInput = el('input');
+    kInput.id = 'twByokKey';
+    kInput.type = 'password';
+    kInput.placeholder = 'sk-… (never leaves your browser to storage)';
+    const existingKey = readKeys()[kprovSel] || '';
+    if (existingKey) kInput.placeholder = existingKey;
+    bRow.appendChild(kInput);
+    byok.appendChild(bRow);
+    const kBtnRow = el('div', 'tw-btn-group');
+    const kSave = el('button', 'tw-btn tw-btn-sm', 'Save key');
+    const kTest = el('button', 'tw-btn tw-btn-sm', 'Test connection');
+    kTest.id = 'twByokTest';
+    const kClear = el('button', 'tw-btn tw-btn-sm', 'Remove');
+    kBtnRow.appendChild(kSave); kBtnRow.appendChild(kTest); kBtnRow.appendChild(kClear);
+    byok.appendChild(kBtnRow);
+    const kHint = el('div', 'tw-hint', 'Keys are sent only to that provider (over HTTPS) for each request and to this site, never saved on the server.');
+    kHint.id = 'twByokHint';
+    byok.appendChild(kHint);
+    strip.appendChild(byok);
+
+    kSave.addEventListener('click', () => {
+      const provider = ksel.value, k = kInput.value.trim();
+      if (!k) { setStatus(false, 'enter a key to save'); return; }
+      const map = readKeys(); map[provider] = k; writeKeys(map);
+      kHint.textContent = provider + ' key saved in your browser (' + maskKey(k) + ').';
+      setStatus(true, provider + ' key saved locally');
+    });
+    kClear.addEventListener('click', () => {
+      const map = readKeys(); delete map[ksel.value]; writeKeys(map);
+      kInput.value = ''; kInput.placeholder = 'sk-…'; kHint.textContent = ksel.value + ' key removed.';
+      setStatus(true, 'key removed');
+    });
+    kTest.addEventListener('click', () => {
+      const provider = ksel.value;
+      const k = kInput.value.trim() || readKeys()[provider] || '';
+      if (!k) { setStatus(false, 'save a key first'); return; }
+      testKey(provider, k);
+    });
+
+    /* language + erasure */
     const langRow = el('div', 'tw-field');
     langRow.appendChild(el('label', '', 'Language'));
     const lsel = el('select');
@@ -526,12 +657,56 @@
     lsel.value = lang();
     lsel.addEventListener('change', () => { stSet(LS.lang, lsel.value); });
     langRow.appendChild(lsel);
-    row.appendChild(langRow);
+    strip.appendChild(langRow);
 
     const erase = el('button', 'tw-btn tw-btn-sm', '🗑 Erase all my data (right to erasure)');
     erase.addEventListener('click', eraseData);
-    row.appendChild(erase);
-    strip.appendChild(row);
+    strip.appendChild(erase);
+  }
+
+  async function saveAiCfg(provider, model, temperature) {
+    try {
+      const data = await fetchJson('/config', {
+        method: 'PUT',
+        body: JSON.stringify({ learnerId: learnerId(), config: { provider, model: model.trim(), temperature: Number(temperature), maxTokens: 900 } }),
+      });
+      if (data.saved) {
+        state.aiConfig = { ...(state.aiConfig || defaultAiCfg()), ...data.config };
+        writeAiCfg(state.aiConfig);
+        setStatus(true, 'AI config saved to your profile');
+      }
+    } catch (err) { setStatus(false, 'config save failed'); }
+  }
+
+  async function resetAiCfg() {
+    try {
+      await fetchJson('/config', { method: 'DELETE', body: JSON.stringify({ learnerId: learnerId() }) });
+      state.aiConfig = defaultAiCfg();
+      writeAiCfg(state.aiConfig);
+      setStatus(true, 'AI config reset to server defaults');
+      renderSettings();
+    } catch (err) { setStatus(false, 'reset failed'); }
+  }
+
+  async function testKey(provider, key) {
+    kTestBtnBusy(true);
+    try {
+      const data = await fetchJson('/config', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'test', provider, apiKey: key, learnerId: learnerId() }),
+      });
+      if (data.tested) setStatus(true, provider + ' OK (' + data.latencyMs + ' ms)');
+      else setStatus(false, provider + ' rejected: ' + (data.error || 'unknown'));
+    } catch (err) {
+      setStatus(false, 'test failed: ' + (err.message || 'network'));
+    } finally {
+      kTestBtnBusy(false);
+    }
+  }
+
+  function kTestBtnBusy(on) {
+    const btn = $('#twByokTest');
+    if (btn) { btn.disabled = on; btn.textContent = on ? '…' : 'Test connection'; }
   }
 
   async function eraseData() {
@@ -679,6 +854,17 @@
       for (const s of health.subjects || []) SUBJECTS[s.id] = s;
       const onlinePs = (health.providers || []).filter((p) => p.available);
       setStatus(true, 'connected · ' + (onlinePs.length ? onlinePs.length + ' AI provider' + (onlinePs.length > 1 ? 's' : '') + ' ready' : 'offline-answer mode'));
+      // per-user AI configuration
+      state.aiConfig = readAiCfg();
+      try {
+        const cfgRes = await fetchJson('/config?learnerId=' + encodeURIComponent(learnerId()), {}, 15000);
+        if (cfgRes && cfgRes.config) {
+          state.aiConfig = { ...defaultAiCfg(), ...readAiCfg(), ...cfgRes.config };
+          writeAiCfg(state.aiConfig);
+          state.providers = cfgRes.providers || state.providers;
+          if (cfgRes.config && cfgRes.config.provider) setStatus(true, 'using your AI config · ' + cfgRes.config.provider);
+        }
+      } catch { /* server config optional — local settings still work */ }
     } catch (err) {
       setStatus(false, 'API unreachable — AI features disabled');
     }

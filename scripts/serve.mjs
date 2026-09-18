@@ -20,6 +20,10 @@ const handlers = {
   'POST /api/notes': (await import('../api/notes.js')).default,
   'POST /api/rag': (await import('../api/rag.js')).default,
   'DELETE /api/learner': (await import('../api/learner.js')).default,
+  'GET /api/config': (await import('../api/config.js')).default,
+  'PUT /api/config': (await import('../api/config.js')).default,
+  'POST /api/config': (await import('../api/config.js')).default,
+  'DELETE /api/config': (await import('../api/config.js')).default,
 };
 
 const MIME = {

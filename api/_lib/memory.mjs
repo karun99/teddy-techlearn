@@ -102,6 +102,21 @@ function fileStore() {
         l.data.cognitiveLoad.push({ at: new Date().toISOString(), ...load });
       });
     },
+    async getAiConfig(id) {
+      const l = read(id, null);
+      return l?.data?.aiConfig || null;
+    },
+    async setAiConfig(id, cfg) {
+      const okSet = await this.update(id, (l) => {
+        l.data.aiConfig = cfg;
+      });
+      return okSet ? cfg : null;
+    },
+    async clearAiConfig(id) {
+      return this.update(id, (l) => {
+        delete l.data.aiConfig;
+      });
+    },
     async deleteLearner(id) {
       try {
         // eslint-disable-next-line no-unused-expressions
@@ -219,6 +234,28 @@ async function neo4jStore() {
       );
       const strengths = rows[0]?.get('strengths') || [];
       return { strengths, struggles: [], recentTopics: [], streak: 0 };
+    },
+    async getAiConfig(id) {
+      const rows = await runOne(
+        `MATCH (l:Learner { id: $id }) RETURN l.aiConfig AS cfg`,
+        { id }
+      );
+      const cfg = rows[0]?.get('cfg');
+      return cfg && typeof cfg === 'object' ? cfg : null;
+    },
+    async setAiConfig(id, cfg) {
+      await runOne(
+        `MERGE (l:Learner { id: $id }) SET l.aiConfig = $cfg`,
+        { id, cfg }
+      );
+      return cfg;
+    },
+    async clearAiConfig(id) {
+      await runOne(
+        `MATCH (l:Learner { id: $id }) REMOVE l.aiConfig`,
+        { id }
+      );
+      return true;
     },
     async deleteLearner(id) {
       await runOne(`MATCH (l:Learner { id: $id }) DETACH DELETE l`, { id });

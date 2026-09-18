@@ -42,9 +42,15 @@ Vercel detects `api/*.js` as serverless functions and serves the 931 static HTML
 
 ## 4. Local development (no auth needed)
 ```
-node scripts/verify.mjs     # run the 21-check API test suite
+node scripts/verify.mjs     # run the 32-check API test suite
 node scripts/serve.mjs      # static + API on http://localhost:8787
 ```
+
+## 6. Per-user AI configuration (AI-CONFIG)
+Each learner can override the site defaults from the 🧸 widget → ⚙ settings:
+- **Provider / model / temperature** — saved to their learner profile (`GET/PUT/DELETE /api/config`), used on every chat call.
+- **Bring your own key (BYOK)** — the widget keeps the user's API key in `localStorage` only and sends it per-request over HTTPS. It is never written to the learner graph or server logs. Verify with the "Test connection" button (`POST /api/config { action:'test' }`).
+- A user's key unlocks that provider even when the site has no server-side key for it; the router only ever sends a key to its own provider.
 
 ## 5. Neo4j (persistent memory)
 1. Create an AuraDB free instance.

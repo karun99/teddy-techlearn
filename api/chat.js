@@ -21,6 +21,7 @@ export default async function handler(req, res) {
       learnerId: typeof body.learnerId === 'string' ? body.learnerId : null,
       provider: typeof body.provider === 'string' ? body.provider : undefined,
       history: Array.isArray(body.history) ? body.history : [],
+      aiConfig: body.aiConfig && typeof body.aiConfig === 'object' ? body.aiConfig : undefined,
     });
     return ok(res, result);
   } catch (err) {

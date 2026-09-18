@@ -5,9 +5,10 @@
 import { Readable } from 'node:stream';
 
 /* ---------- tiny req/res mocks for Vercel-style handlers ---------- */
-function mockReq(body, method = 'POST') {
+function mockReq(body, method = 'POST', url = '/') {
   const req = Readable.from(JSON.stringify(body || {}));
   req.method = method;
+  req.url = url;
   req.headers = { 'content-type': 'application/json' };
   return req;
 }
@@ -26,8 +27,8 @@ function mockRes() {
   return res;
 }
 
-async function call(handler, payload, method = 'POST') {
-  const req = mockReq(payload, method);
+async function call(handler, payload, method = 'POST', url = '/') {
+  const req = mockReq(payload, method, url);
   const res = mockRes();
   await handler(req, res);
   let json = null;
@@ -53,8 +54,10 @@ const notes = (await import('../api/notes.js')).default;
 const rag = (await import('../api/rag.js')).default;
 const health = (await import('../api/health.js')).default;
 const learner = (await import('../api/learner.js')).default;
+const config = (await import('../api/config.js')).default;
 const { loadAllSubjects, syllabusStats } = await import('../api/_lib/syllabus.mjs');
 const { retrieve } = await import('../api/_lib/rag.mjs');
+const { isUsable, ordering } = await import('../api/_lib/router.mjs');
 
 /* 1. syllabus integrity (FR-4xx) */
 const subjects = loadAllSubjects();
@@ -107,7 +110,28 @@ r = await call(health, {}, 'GET');
 check('/api/health ok', r.status === 200 && r.json?.status === 'ok' && r.json?.providers?.length >= 6, `providers=${r.json?.providers?.length} subjects=${r.json?.subjects?.length}`);
 check('health lists 25 subjects', r.json?.subjects?.length === 25);
 
-/* 7. erasure (FR-904) */
+/* 7. per-user AI configuration (AI-CONFIG-1xx) */
+r = await call(config, {}, 'GET', '/api/config?learnerId=cfg-user-1');
+check('config defaults unconfigured', r.status === 200 && r.json?.configured === false, `configured=${r.json?.configured}`);
+r = await call(config, { learnerId: 'cfg-user-1', config: { provider: 'gemini', model: 'gemini-1.5-flash', temperature: 0.7, maxTokens: 1500 } }, 'PUT');
+check('config PUT saves', r.status === 200 && r.json?.saved && r.json?.config?.provider === 'gemini', JSON.stringify(r.json?.config));
+r = await call(config, {}, 'GET', '/api/config?learnerId=cfg-user-1');
+check('config GET returns stored', r.json?.configured === true && r.json?.config?.temperature === 0.7 && r.json?.config?.maxTokens === 1500, JSON.stringify(r.json?.config));
+r = await call(config, { learnerId: 'cfg-user-1', config: { provider: 'openrouter', temperature: 0.7, apiKey: 'sk-should-never-persist' } }, 'PUT');
+check('config rejects persisted API keys', r.status === 200 && !('apiKey' in r.json?.config), JSON.stringify(r.json?.config));
+r = await call(config, {}, 'GET', '/api/config?learnerId=cfg-user-1');
+check('config GET has no key leak', !JSON.stringify(r.json).includes('sk-should-never-persist'));
+check('config advises byok providers', Array.isArray(r.json?.byokProviders) && !r.json?.byokProviders.includes('ollama'));
+/* router BYOK unlock logic (env-independent) */
+check('isUsable: BYOK unlocks matching provider', isUsable('openai', { apiKey: 'x', apiKeyFor: 'openai' }) === true);
+check('isUsable: key does not unlock other providers', isUsable('openai', { apiKey: 'x', apiKeyFor: 'gemini' }) === false);
+check('ordering includes keyed provider', ordering(['openai'], { apiKey: 'x', apiKeyFor: 'openai' }).some((p) => p.key === 'openai'));
+r = await call(config, { learnerId: 'cfg-user-1' }, 'DELETE');
+check('config DELETE resets', r.status === 200 && r.json?.cleared === true);
+r = await call(config, {}, 'GET', '/api/config?learnerId=cfg-user-1');
+check('config reset confirmed', r.json?.configured === false);
+
+/* 8. erasure (FR-904) */
 r = await call(learner, { learnerId: 'test-learner-1' }, 'DELETE');
 check('learner erased', r.status === 200 && r.json?.erased === true);
 

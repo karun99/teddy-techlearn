@@ -36,6 +36,18 @@ export function isAvailable(p) {
   return Boolean(process.env[p.env]);
 }
 
+/**
+ * Availability for one request. A provider is usable when the server has its
+ * env key OR the user supplied a BYOK key for exactly that provider
+ * (apiKeyFor === provider.key). Not persisted anywhere.
+ */
+export function isUsable(p, { apiKey, apiKeyFor } = {}) {
+  if (typeof p === 'string') p = PROVIDER_MAP[p];
+  if (!p) return false;
+  if (isAvailable(p)) return true;
+  return Boolean(apiKey && apiKeyFor === p.key && !p.local);
+}
+
 function parseJsonResponse(text) {
   try {
     return JSON.parse(text);
@@ -70,17 +82,19 @@ async function postJSON(url, body, headers = {}, timeoutMs = 45000) {
   }
 }
 
-/** Call one provider; returns { text, provider, model }. */
-export async function callProvider(providerKey, messages, { model, temperature = 0.4, maxTokens = 900 } = {}) {
+/** Call one provider; returns { text, provider, model }. apiKey overrides the env key for this provider. */
+export async function callProvider(providerKey, messages, { model, temperature = 0.4, maxTokens = 900, apiKey } = {}) {
   const p = PROVIDER_MAP[providerKey];
   if (!p) throw new Error(`unknown provider: ${providerKey}`);
-  if (!isAvailable(p)) throw new Error(`provider unavailable: ${providerKey} (missing ${p.env})`);
+  if (!isUsable(p.key, { apiKey })) {
+    throw new Error(`provider unavailable: ${providerKey} (missing ${p.env} or a user key)`);
+  }
   model = model || envModel(p);
 
   let text;
   switch (p.key) {
     case 'gemini': {
-      const key = process.env.GEMINI_API_KEY;
+      const key = apiKey || process.env.GEMINI_API_KEY;
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`;
       const parts = messages.map((m) => ({ role: m.role === 'system' ? 'user' : m.role, parts: [{ text: m.content }] }));
       const data = await postJSON(url, {
@@ -102,7 +116,7 @@ export async function callProvider(providerKey, messages, { model, temperature =
           system: messages.find((m) => m.role === 'system')?.content || '',
           messages: messages.filter((m) => m.role !== 'system').map((m) => ({ role: m.role, content: m.content })),
         },
-        { 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' }
+        { 'x-api-key': apiKey || process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' }
       );
       text = (data?.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('');
       if (!text) throw new Error('anthropic returned empty response');
@@ -132,7 +146,7 @@ export async function callProvider(providerKey, messages, { model, temperature =
         },
         groq: { url: 'https://api.groq.com/openai/v1/chat/completions', key: process.env.GROQ_API_KEY, h: {} },
       }[p.key];
-      const data = await postJSON(cfg.url, { model, messages, temperature, max_tokens: maxTokens }, { Authorization: `Bearer ${cfg.key}`, ...cfg.h });
+      const data = await postJSON(cfg.url, { model, messages, temperature, max_tokens: maxTokens }, { Authorization: `Bearer ${apiKey || cfg.key}`, ...cfg.h });
       text = data?.choices?.[0]?.message?.content || '';
       if (!text) throw new Error(`${p.key} returned empty response`);
     }
@@ -141,10 +155,10 @@ export async function callProvider(providerKey, messages, { model, temperature =
   return { text: text.trim(), provider: p.key, model, label: p.label };
 }
 
-/** Ordered fallback chain. Preferred at front. */
-export function ordering(prefer) {
+/** Ordered fallback chain. Preferred at front. Respects a per-request BYOK key. */
+export function ordering(prefer, { apiKey, apiKeyFor } = {}) {
   const prefs = Array.isArray(prefer) ? prefer : [prefer];
-  const base = PROVIDERS.filter((p) => isAvailable(p));
+  const base = PROVIDERS.filter((p) => isUsable(p, { apiKey, apiKeyFor }));
   const ranked = [];
   for (const k of prefs) {
     const hit = base.find((p) => p.key === k);
@@ -158,16 +172,17 @@ export function ordering(prefer) {
   return ranked;
 }
 
-/** Try providers in order until one succeeds. */
-export async function callWithFallback(messages, { prefer, model, temperature, maxTokens } = {}) {
-  const chain = ordering(prefer);
+/** Try providers in order until one succeeds. A BYOK key is only sent to its own provider. */
+export async function callWithFallback(messages, { prefer, model, temperature, maxTokens, apiKey, apiKeyFor } = {}) {
+  const chain = ordering(prefer, { apiKey, apiKeyFor });
   const errors = [];
   if (chain.length === 0) {
     throw new Error('no-llm-configured');
   }
   for (const p of chain) {
+    const keyForThis = apiKeyFor === p.key ? apiKey : undefined;
     try {
-      const out = await callProvider(p.key, messages, { model, temperature, maxTokens });
+      const out = await callProvider(p.key, messages, { model, temperature, maxTokens, apiKey: keyForThis });
       return { ...out, fallbacks: errors.length };
     } catch (err) {
       errors.push(`${p.key}: ${err.message}`);

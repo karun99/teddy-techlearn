@@ -11,6 +11,7 @@ The 931 static pages are served **unchanged**; every AI feature is injected at r
 | **Teddy assistant** | Floating chat widget on every page; Socratic Duet-style persona; bilingual (English + Telugu); crisis/mental-health protocol; context-aware from the current topic page | FR-1xx, FR-2xx, AI-1xx, FR-11xx |
 | **Grounding & RAG** | BM25 retrieval over the full syllabus (subjects/units/topics), glossary (parsed from `glossary.html`), and PYQs. LLM answers are grounded; ungrounded questions are refused (safe-fail) | FR-4xx, FR-5xx |
 | **Provider router** | 6 LLM providers with a fallback chain: Gemini (default free tier) → OpenRouter → OpenAI → Anthropic → Groq → local Ollama. Zero-key offline mode returns grounded compiled answers | FR-12xx, AI-2xx |
+| **User AI control** | Per-learner provider/model/temperature saved to their profile; "bring your own key" kept only in the browser and applied per-request — users can switch stack even if the site has no server keys | AI-CONFIG-1xx |
 | **Timed quizzes** | MCQs + PYQs with timer, flags, hints, scoring, strong/weak-topic tracking; answer key rebuilt server-side (client never sees answers during the quiz) | FR-13xx (AI-3xx style), FR-15xx |
 | **Adaptive notes** | Cornell, outline, and flashcard note templates per topic; export to Markdown, JSON, and Anki CSV | FR-16xx |
 | **Persistent memory** | Learner graph in Neo4j (Aura) with file-store fallback; study history, mastery, mistakes; learner data erasure (right to be forgotten) | FR-9xx, FR-904, FR-101x, AI-4xx |
@@ -19,7 +20,7 @@ The 931 static pages are served **unchanged**; every AI feature is injected at r
 ## Repo layout
 
 ```
-api/              Vercel serverless functions (chat, quiz, notes, rag, health, learner)
+api/              Vercel serverless functions (chat, quiz, notes, rag, config, health, learner)
 api/_lib/         syllabus loader, BM25 RAG, provider router, persona, memory, notes, OI, chat core
 teddy/            injected widget (teddy-widget.js + CSS)
 scripts/          verify.mjs (21-check test suite), serve.mjs (local dev server)
