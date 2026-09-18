@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M.Tech CSE Learning Hub | JNTU Kakinada</title>
+  <meta name="description" content="Interactive learning application for M.Tech Computer Science & Engineering, JNTU Kakinada. Study unit-wise topics, test with JNTU repeated questions, and track progress.">
+  <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <nav class="main-nav">
+    <div class="nav-brand">
+      <a href="index.html">
+        <span class="brand-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span>M.Tech CSE<small>JNTUK Learning Hub</small></span>
+      </a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+      <a href="semester1.html" class="nav-link"><i class="fas fa-1"></i> Sem 1</a>
+      <a href="semester2.html" class="nav-link"><i class="fas fa-2"></i> Sem 2</a>
+      <a href="semester3.html" class="nav-link"><i class="fas fa-3"></i> Sem 3</a>
+      <a href="semester4.html" class="nav-link"><i class="fas fa-4"></i> Sem 4</a>
+      <a href="glossary.html" class="nav-link"><i class="fas fa-book"></i> Glossary</a>
+    </div>
+    <div class="nav-progress">
+      <i class="fas fa-chart-line"></i><span id="overallProgress">0%</span>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <span class="badge-pill"><i class="fas fa-university"></i> Jawaharlal Nehru Technological University Kakinada</span>
+    <h1>M.Tech Computer Science &amp; Engineering</h1>
+    <p>Master every subject, unit by unit, with structured topics, JNTU repeated examination questions, and instant self-tests — designed to reduce study strain.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="num">4</div><div class="lbl">Semesters</div></div>
+      <div class="stat"><div class="num">20+</div><div class="lbl">Subjects</div></div>
+      <div class="stat"><div class="num">100+</div><div class="lbl">Unit Topics</div></div>
+      <div class="stat"><div class="num">300+</div><div class="lbl">Exam Questions</div></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2 class="section-title"><i class="fas fa-layer-group"></i> Programme Structure</h2>
+      <p class="muted mb-3">Choose a semester to explore its subjects. Each subject is broken into accessible unit topics (1.1 → 1.5) with a built-in bank of the most repeated JNTU examination questions per unit and overall.</p>
+
+      <div class="card-grid" id="semesterGrid">
+        <!-- Semester cards rendered by JS -->
+      </div>
+
+      <h2 class="section-title" style="margin-top:2.5rem"><i class="fas fa-stairs"></i> How to Use This App</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon c-1"><i class="fas fa-book-open"></i></div>
+          <h3>1. Study the Unit</h3>
+          <p class="sub">Open any subject and click into a unit. Each unit is split into <strong>5 focused topics</strong> (1.1 to 1.5) so you can learn in short, digestible sessions.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon c-3"><i class="fas fa-bullseye"></i></div>
+          <h3>2. Review Repeated Questions</h3>
+          <p class="sub">Every unit lists the <strong>most repeated JNTU questions</strong> from previous years, plus an overall subject set — focus effort where it counts.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon c-4"><i class="fas fa-list-check"></i></div>
+          <h3>3. Test Yourself</h3>
+          <p class="sub">Complete the unit activity (quiz). Score at least <strong>40%</strong> to mark the unit complete and unlock the next unit.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon c-5"><i class="fas fa-fire"></i></div>
+          <h3>4. Track Your Progress</h3>
+          <p class="sub">Your scores are saved on this device. Watch your overall progress grow and revisit weak units anytime.</p>
+        </div>
+      </div>
+
+      <h2 class="section-title" style="margin-top:2.5rem"><i class="fas fa-road"></i> Your Study Path</h2>
+      <div class="diagram-wrapper">
+        <div class="diagram-controls">
+          <button onclick="zoomIn(this)" title="Zoom In"><i class="fas fa-search-plus"></i></button>
+          <button onclick="zoomOut(this)" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
+          <button onclick="resetZoom(this)" title="Reset"><i class="fas fa-expand"></i></button>
+        </div>
+        <div class="diagram-container">
+          <pre class="mermaid">
+flowchart LR
+  A[Dashboard] --> B[Semester]
+  B --> C[Subject]
+  C --> D[Unit 1..5]
+  D --> E[Topics 1.1..1.5]
+  D --> F[Repeated Questions]
+  D --> G[Activity Quiz]
+  G --> H{Pass ≥ 12/30?}
+  H -- Yes --> I[Unlock Next Unit]
+  H -- No --> D
+  I --> J[Overall Progress ↑]
+          </pre>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p><i class="fas fa-graduation-cap"></i> &copy; 2026 M.Tech CSE Learning Hub — JNTU Kakinada syllabus. Built for learners. <a href="task.md">Learn about this app</a></p>
+  </footer>
+
+  <!-- ═══════ CELEBOT AI ASSISTANT WIDGET ═══════ -->
+  <button class="celebot-fab" id="celebotFab" title="Ask Celebot AI">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div class="celebot-widget" id="celebotWidget">
+    <div class="cw-header">
+      <div class="cw-header-left">
+        <i class="fas fa-graduation-cap cw-icon"></i>
+        <div>
+          <div class="cw-title">Celebot</div>
+          <div class="cw-subtitle">AI Learning Assistant</div>
+        </div>
+      </div>
+      <div class="cw-header-actions">
+        <button class="cw-btn-icon" id="cwConfigBtn" title="Configure Celebot"><i class="fas fa-cog"></i></button>
+        <button class="cw-btn-icon" id="cwMinimizeBtn" title="Minimize"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="cw-api-bar">
+      <input type="password" id="cwApiKey" placeholder="OpenRouter BYOK key" />
+      <button class="cw-api-save" id="cwApiSave"><i class="fas fa-save"></i></button>
+      <span class="cw-api-status" id="cwApiStatus"></span>
+    </div>
+
+    <div class="cw-messages" id="cwChatBox">
+      <div class="cw-msg cw-bot">
+        <div class="cw-msg-label"><i class="fas fa-graduation-cap"></i> Celebot</div>
+        <div class="cw-msg-body">Hi! I can help you with any M.Tech topic. Ask me to explain a concept, clarify a doubt, or summarize a unit.</div>
+      </div>
+    </div>
+
+    <div class="cw-skills">
+      <button class="cw-skill" data-skill="doubt"><i class="fas fa-question-circle"></i> Clarify Doubt</button>
+      <button class="cw-skill" data-skill="summarize"><i class="fas fa-list-alt"></i> Summarize</button>
+      <button class="cw-skill" data-skill="explain"><i class="fas fa-lightbulb"></i> Explain Topic</button>
+      <button class="cw-skill" data-skill="quiz"><i class="fas fa-puzzle-piece"></i> Quiz Me</button>
+    </div>
+
+    <div class="cw-input-row">
+      <input type="text" id="cwUserInput" placeholder="Ask anything about your subjects..." />
+      <button class="cw-send" id="cwSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Celebot Config Modal -->
+  <div class="cw-config-modal" id="cwConfigModal">
+    <div class="cw-config-card">
+      <h3><i class="fas fa-graduation-cap"></i> Celebot Configuration</h3>
+      <div class="cw-cfg-field">
+        <label>Model</label>
+        <select id="cwCfgModel"></select>
+      </div>
+      <div class="cw-cfg-field">
+        <label>Persona</label>
+        <textarea id="cwCfgPersona" rows="3">You are Celebot, a friendly M.Tech CSE teaching assistant. Explain concepts simply, use examples, and ground answers in the JNTU Kakinada syllabus.</textarea>
+      </div>
+      <div class="cw-cfg-row">
+        <div class="cw-cfg-field"><label>Max Tokens</label><input id="cwCfgTokens" type="number" value="1000" /></div>
+        <div class="cw-cfg-field"><label>Temperature</label><input id="cwCfgTemp" type="number" step="0.1" min="0" max="1.5" value="0.5" /></div>
+      </div>
+      <div class="cw-cfg-actions">
+        <button id="cwCfgClose">Close</button>
+        <button class="cw-cfg-save" id="cwCfgSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#2563eb',
+        primaryTextColor: '#ffffff',
+        primaryBorderColor: '#1d4ed8',
+        lineColor: '#64748b',
+        fontSize: '14px'
+      }
+    });
+  </script>
+  <script src="script.js"></script>
+  <script>
+    (function () {
+      var semesters = [
+        { id: 1, title: 'I Year &middot; Semester I', desc: 'Foundations: Mathematics, Data Structures, Big Data, Networks, OOSE &amp; Research Methodology.', icon: 'fa-flask', c: 1, subjects: 9, href: 'semester1.html' },
+        { id: 2, title: 'I Year &middot; Semester II', desc: 'Machine Learning, MEAN Stack, Databases &amp; Mining, Cloud, Security &amp; Soft Computing.', icon: 'fa-laptop-code', c: 2, subjects: 8, href: 'semester2.html' },
+        { id: 3, title: 'II Year &middot; Semester I', desc: 'Deep Learning, Social Network Analysis, Open Electives &amp; Dissertation-I.', icon: 'fa-brain', c: 3, subjects: 4, href: 'semester3.html' },
+        { id: 4, title: 'II Year &middot; Semester II', desc: 'Dissertation-II — Research, Implementation &amp; Viva-Voce.', icon: 'fa-file-signature', c: 4, subjects: 1, href: 'semester4.html' }
+      ];
+      document.getElementById('semesterGrid').innerHTML = semesters.map(function (s) {
+        return '<div class="card unit-card" onclick="location.href=\'' + s.href + '\'">' +
+          '<div class="card-icon c-' + s.c + '"><i class="fas ' + s.icon + '"></i></div>' +
+          '<h3>' + s.title + '</h3>' +
+          '<p class="sub">' + s.desc + '</p>' +
+          '<div class="tags"><span class="tag">' + s.subjects + ' subjects</span><span class="tag">Open</span></div>' +
+          '</div>';
+      }).join('');
+    })();
+  </script>
+</body>
+</html>

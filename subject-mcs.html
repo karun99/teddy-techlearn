@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mathematical Foundations of Computer Science | M.Tech CSE</title>
+<meta name="description" content="Mathematical Foundations of Computer Science — unit-wise topics, JNTU repeated questions and activities">
+<link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad:true, theme:'base', themeVariables:{ primaryColor:'#2563eb', primaryTextColor:'#ffffff', primaryBorderColor:'#1d4ed8', lineColor:'#64748b', fontSize:'14px' } });</script>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="nav-brand">
+    <a href="index.html"><span class="brand-icon"><i class="fas fa-graduation-cap"></i></span>
+      <span>M.Tech CSE<small>JNTUK</small></span></a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+    <a href="semester1.html" class="nav-link"><i class="fas fa-1"></i> Sem 1</a>
+    <a href="semester2.html" class="nav-link"><i class="fas fa-2"></i> Sem 2</a>
+    <a href="semester3.html" class="nav-link"><i class="fas fa-3"></i> Sem 3</a>
+    <a href="semester4.html" class="nav-link"><i class="fas fa-4"></i> Sem 4</a>
+    <a href="glossary.html" class="nav-link"><i class="fas fa-book"></i> Glossary</a>
+  </div>
+  <div class="nav-progress"><i class="fas fa-chart-line"></i><span id="overallProgress">0%</span></div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><a href="semester1.html">Semester 1</a><span class="sep">/</span><span>Mathematics</span></div>
+<header class="unit-header" style="--unit-color:var(--c1)">
+  <span class="unit-badge">MTCSE1101</span>
+  <h1>Mathematical Foundations of Computer Science</h1>
+  <p class="unit-subtitle">Probability, Sampling, Hypothesis Testing, Number Theory &amp; Graph Theory</p>
+  <div class="meta">
+    <span><i class="fas fa-layer-group"></i>5 Units</span>
+    <span><i class="fas fa-tags"></i>Core</span>
+    <span><i class="fas fa-book"></i>3 Credits</span>
+  </div>
+</header>
+<div class="content-container">
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c1)"><i class="fas fa-bullseye"></i> Course Objectives</h2>
+    <ul><li>Understand the mathematical fundamentals that are prerequisites for courses like data mining, networks, security and machine learning.</li><li>Develop the mathematical and logical basis for modern computer science techniques.</li><li>Study various sampling and classification problems.</li></ul>
+  </div>
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c1)"><i class="fas fa-star"></i> Course Outcomes</h2>
+    <p class="small muted mb-2">After completing this course, a student will be able to:</p>
+    <ul><li>Apply the rules and theorems of probability theory (e.g., Bayes' theorem) to solve engineering problems and find expectation and variance of random variables.</li><li>Perform and analyse sampling, means, proportions, variances and estimate population parameters by maximum likelihood.</li><li>Formulate and test hypotheses about sample means, variances and proportions.</li><li>Design various ciphers using number theory.</li><li>Apply graph theory to real-time problems like network routing.</li></ul>
+  </div>
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c1)"><i class="fas fa-list-check"></i> Unit-wise Topics</h2>
+    
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c1)"><i class="fas fa-layer-group"></i> Unit 1: Basic Probability and Random Variables</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Random Experiments, Sample Spaces and Events, the Concept of Probability, the Axioms of Probability, Some Important Theorems on Probability, Assignmen…</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-mcs-u1-t1.html"><span class="num">1.1</span> Random Experiments</a></div><div><a href="topic-mcs-u1-t2.html"><span class="num">1.2</span> the Axioms of Probability</a></div><div><a href="topic-mcs-u1-t3.html"><span class="num">1.3</span> Conditional Probability</a></div><div><a href="topic-mcs-u1-t4.html"><span class="num">1.4</span> Independent Events</a></div><div><a href="topic-mcs-u1-t5.html"><span class="num">1.5</span> Distribution Functions for Random Variables</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-mcs-act-u1.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-u1.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c1)"><i class="fas fa-layer-group"></i> Unit 2: Sampling and Estimation Theory</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Population and Sample, Statistical Inference, Sampling With and Without Replacement, Random Samples, Random Numbers, Population Parameters, Sample Sta…</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-mcs-u2-t1.html"><span class="num">2.1</span> Population and Sample</a></div><div><a href="topic-mcs-u2-t2.html"><span class="num">2.2</span> Random Samples</a></div><div><a href="topic-mcs-u2-t3.html"><span class="num">2.3</span> Sample Statistics</a></div><div><a href="topic-mcs-u2-t4.html"><span class="num">2.4</span> Computation of Mean</a></div><div><a href="topic-mcs-u2-t5.html"><span class="num">2.5</span> Reliability</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-mcs-act-u2.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-u2.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c1)"><i class="fas fa-layer-group"></i> Unit 3: Tests of Hypothesis and Significance</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Statistical Decisions, Statistical Hypotheses, Null Hypotheses, Tests of Hypotheses and Significance, Type I and Type II Errors, Level of Significance…</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-mcs-u3-t1.html"><span class="num">3.1</span> Statistical Decisions</a></div><div><a href="topic-mcs-u3-t2.html"><span class="num">3.2</span> Type I and Type II Errors</a></div><div><a href="topic-mcs-u3-t3.html"><span class="num">3.3</span> P Value</a></div><div><a href="topic-mcs-u3-t4.html"><span class="num">3.4</span> Operating Characteristic Curves</a></div><div><a href="topic-mcs-u3-t5.html"><span class="num">3.5</span> the Chi-Square Test for Goodness of Fit</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-mcs-act-u3.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-u3.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c1)"><i class="fas fa-layer-group"></i> Unit 4: Algebraic Structures and Number Theory</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Algebraic Systems, Examples, General Properties, Semi Groups and Monoids, Homomorphism of Semi Groups and Monoids, Group, Subgroup, Abelian Group, Hom…</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-mcs-u4-t1.html"><span class="num">4.1</span> Algebraic Systems</a></div><div><a href="topic-mcs-u4-t2.html"><span class="num">4.2</span> Semi Groups and Monoids</a></div><div><a href="topic-mcs-u4-t3.html"><span class="num">4.3</span> Abelian Group</a></div><div><a href="topic-mcs-u4-t4.html"><span class="num">4.4</span> Division Theorem</a></div><div><a href="topic-mcs-u4-t5.html"><span class="num">4.5</span> Testing for Prime Numbers</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-mcs-act-u4.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-u4.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c1)"><i class="fas fa-layer-group"></i> Unit 5: Graph Theory</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Basic Concepts of Graphs, Subgraphs, Matrix Representation of Graphs (Adjacency and Incidence Matrices), Isomorphic Graphs, Paths and Circuits, Euleri…</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-mcs-u5-t1.html"><span class="num">5.1</span> Basic Concepts of Graphs</a></div><div><a href="topic-mcs-u5-t2.html"><span class="num">5.2</span> Isomorphic Graphs</a></div><div><a href="topic-mcs-u5-t3.html"><span class="num">5.3</span> Eulerian and Hamiltonian Graphs</a></div><div><a href="topic-mcs-u5-t4.html"><span class="num">5.4</span> Euler's Formula</a></div><div><a href="topic-mcs-u5-t5.html"><span class="num">5.5</span> Chromatic Number</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-mcs-act-u5.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-u5.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-mcs-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+  </div>
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c1)"><i class="fas fa-trophy"></i> Overall Repeated Questions</h2>
+    <p class="small muted mb-2">The most frequently asked JNTU questions across the whole subject — ideal for final revision.</p>
+    <a class="btn btn-warning" style="background:var(--warning);border-color:var(--warning);color:#fff" href="subject-mcs-pyq-overall.html"><i class="fas fa-list-ol"></i> Open Overall PYQ</a>
+  </div>
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c1)"><i class="fas fa-book-open"></i> Text Books</h2>
+    <ul><li>Foundation Mathematics for Computer Science, John Vince, Springer.</li><li>Probability & Statistics, 3rd Edition, Murray R. Spiegel, John J. Schiller and R. Alu Srinivasan, Schaum's Outline Series, Tata McGraw-Hill.</li><li>Probability and Statistics with Reliability, K. Trivedi, Wiley.</li><li>Discrete Mathematics and its Applications with Combinatorics and Graph Theory, 7th Edition, H. Rosen, Tata McGraw Hill.</li></ul>
+    <h3 style="margin-top:1.2rem;font-size:.95rem;color:var(--text-secondary)">Reference Books</h3>
+    <ul><li>Probability and Computing: Randomized Algorithms and Probabilistic Analysis, M. Mitzenmacher and E. Upfal.</li><li>Applied Combinatorics, Alan Tucker, Wiley.</li></ul>
+  </div>
+  <div style="text-align:center;margin-top:1rem">
+    <a href="subject-mcs-act-u1.html" class="btn btn-primary btn-lg"><i class="fas fa-play"></i> Start Unit 1 Activity</a>
+    <a href="subject-mcs-pyq-overall.html" class="btn btn-outline btn-lg"><i class="fas fa-bullseye"></i> Overall Repeated Questions</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p><i class="fas fa-graduation-cap"></i> &copy; 2026 M.Tech CSE Learning Hub — JNTU Kakinada. <a href="task.md">About this app</a></p>
+</footer>
+<script src="script.js"></script>
+
+  <!-- ═══════ CELEBOT AI ASSISTANT WIDGET ═══════ -->
+  <button class="celebot-fab" id="celebotFab" title="Ask Celebot AI">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div class="celebot-widget" id="celebotWidget">
+    <div class="cw-header">
+      <div class="cw-header-left">
+        <i class="fas fa-graduation-cap cw-icon"></i>
+        <div>
+          <div class="cw-title">Celebot</div>
+          <div class="cw-subtitle">AI Learning Assistant</div>
+        </div>
+      </div>
+      <div class="cw-header-actions">
+        <button class="cw-btn-icon" id="cwConfigBtn" title="Configure Celebot"><i class="fas fa-cog"></i></button>
+        <button class="cw-btn-icon" id="cwMinimizeBtn" title="Minimize"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="cw-api-bar">
+      <input type="password" id="cwApiKey" placeholder="OpenRouter BYOK key" />
+      <button class="cw-api-save" id="cwApiSave"><i class="fas fa-save"></i></button>
+      <span class="cw-api-status" id="cwApiStatus"></span>
+    </div>
+
+    <div class="cw-messages" id="cwChatBox">
+      <div class="cw-msg cw-bot">
+        <div class="cw-msg-label"><i class="fas fa-graduation-cap"></i> Celebot</div>
+        <div class="cw-msg-body">Hi! I can help you with any M.Tech topic. Ask me to explain a concept, clarify a doubt, or summarize a unit.</div>
+      </div>
+    </div>
+
+    <div class="cw-skills">
+      <button class="cw-skill" data-skill="doubt"><i class="fas fa-question-circle"></i> Clarify Doubt</button>
+      <button class="cw-skill" data-skill="summarize"><i class="fas fa-list-alt"></i> Summarize</button>
+      <button class="cw-skill" data-skill="explain"><i class="fas fa-lightbulb"></i> Explain Topic</button>
+      <button class="cw-skill" data-skill="quiz"><i class="fas fa-puzzle-piece"></i> Quiz Me</button>
+    </div>
+
+    <div class="cw-input-row">
+      <input type="text" id="cwUserInput" placeholder="Ask anything about your subjects..." />
+      <button class="cw-send" id="cwSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Celebot Config Modal -->
+  <div class="cw-config-modal" id="cwConfigModal">
+    <div class="cw-config-card">
+      <h3><i class="fas fa-graduation-cap"></i> Celebot Configuration</h3>
+      <div class="cw-cfg-field">
+        <label>Model</label>
+        <select id="cwCfgModel"></select>
+      </div>
+      <div class="cw-cfg-field">
+        <label>Persona</label>
+        <textarea id="cwCfgPersona" rows="3">You are Celebot, a friendly M.Tech CSE teaching assistant. Explain concepts simply, use examples, and ground answers in the JNTU Kakinada syllabus.</textarea>
+      </div>
+      <div class="cw-cfg-row">
+        <div class="cw-cfg-field"><label>Max Tokens</label><input id="cwCfgTokens" type="number" value="1000" /></div>
+        <div class="cw-cfg-field"><label>Temperature</label><input id="cwCfgTemp" type="number" step="0.1" min="0" max="1.5" value="0.5" /></div>
+      </div>
+      <div class="cw-cfg-actions">
+        <button id="cwCfgClose">Close</button>
+        <button class="cw-cfg-save" id="cwCfgSave">Save</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

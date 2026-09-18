@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Network Analysis | M.Tech CSE</title>
+<meta name="description" content="Social Network Analysis — unit-wise topics, JNTU repeated questions and activities">
+<link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad:true, theme:'base', themeVariables:{ primaryColor:'#2563eb', primaryTextColor:'#ffffff', primaryBorderColor:'#1d4ed8', lineColor:'#64748b', fontSize:'14px' } });</script>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="nav-brand">
+    <a href="index.html"><span class="brand-icon"><i class="fas fa-graduation-cap"></i></span>
+      <span>M.Tech CSE<small>JNTUK</small></span></a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+    <a href="semester1.html" class="nav-link"><i class="fas fa-1"></i> Sem 1</a>
+    <a href="semester2.html" class="nav-link"><i class="fas fa-2"></i> Sem 2</a>
+    <a href="semester3.html" class="nav-link"><i class="fas fa-3"></i> Sem 3</a>
+    <a href="semester4.html" class="nav-link"><i class="fas fa-4"></i> Sem 4</a>
+    <a href="glossary.html" class="nav-link"><i class="fas fa-book"></i> Glossary</a>
+  </div>
+  <div class="nav-progress"><i class="fas fa-chart-line"></i><span id="overallProgress">0%</span></div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><a href="semester3.html">Semester 3</a><span class="sep">/</span><span>Social Networks</span></div>
+<header class="unit-header" style="--unit-color:var(--c8)">
+  <span class="unit-badge">MTCSE2102</span>
+  <h1>Social Network Analysis</h1>
+  <p class="unit-subtitle">Network Measures, Random Graphs, Diffusion, Small World &amp; Game Theory</p>
+  <div class="meta">
+    <span><i class="fas fa-layer-group"></i>5 Units</span>
+    <span><i class="fas fa-tags"></i>Elective</span>
+    <span><i class="fas fa-book"></i>3 Credits</span>
+  </div>
+</header>
+<div class="content-container">
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c8)"><i class="fas fa-bullseye"></i> Course Objectives</h2>
+    <ul><li>Provide essential knowledge of network analysis applicable to real-world data, with examples from today's most popular social networks.</li></ul>
+  </div>
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c8)"><i class="fas fa-star"></i> Course Outcomes</h2>
+    <p class="small muted mb-2">After completing this course, a student will be able to:</p>
+    <ul><li>Demonstrate social network analysis and measures.</li><li>Analyse random graph models and navigate social network data.</li><li>Apply network topology and visualization tools.</li><li>Analyse experiments with small-world models and clustering models.</li><li>Compare application-driven virtual communities with social network structure.</li></ul>
+  </div>
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c8)"><i class="fas fa-list-check"></i> Unit-wise Topics</h2>
+    
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c8)"><i class="fas fa-layer-group"></i> Unit 1: Social Network Preliminaries</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Social network analysis: preliminaries and definitions, Erdos Number Project, centrality measures, balance and homophily.</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-sna-u1-t1.html"><span class="num">1.1</span> Social network analysis: preliminaries and definitions</a></div><div><a href="topic-sna-u1-t2.html"><span class="num">1.2</span> Erdos Number Project</a></div><div><a href="topic-sna-u1-t3.html"><span class="num">1.3</span> centrality measures</a></div><div><a href="topic-sna-u1-t4.html"><span class="num">1.4</span> balance and homophily.</a></div><div><a href="topic-sna-u1-t5.html"><span class="num">1.5</span> Review the related definitions, examples and key…</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-sna-act-u1.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-u1.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c8)"><i class="fas fa-layer-group"></i> Unit 2: Random Graph Models</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Random graph models: random graphs and alternative models, models of network growth, navigation in social networks, cohesive subgroups, multidimension…</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-sna-u2-t1.html"><span class="num">2.1</span> Random graph models: random graphs and alternative…</a></div><div><a href="topic-sna-u2-t2.html"><span class="num">2.2</span> models of network growth</a></div><div><a href="topic-sna-u2-t3.html"><span class="num">2.3</span> cohesive subgroups</a></div><div><a href="topic-sna-u2-t4.html"><span class="num">2.4</span> multidimensional scaling</a></div><div><a href="topic-sna-u2-t5.html"><span class="num">2.5</span> roles and positions.</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-sna-act-u2.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-u2.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c8)"><i class="fas fa-layer-group"></i> Unit 3: Network Topology and Diffusion</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Network topology and diffusion, contagion in networks, complex contagion, percolation and information, navigation in networks revisited.</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-sna-u3-t1.html"><span class="num">3.1</span> Network topology and diffusion</a></div><div><a href="topic-sna-u3-t2.html"><span class="num">3.2</span> contagion in networks</a></div><div><a href="topic-sna-u3-t3.html"><span class="num">3.3</span> complex contagion</a></div><div><a href="topic-sna-u3-t4.html"><span class="num">3.4</span> percolation and information</a></div><div><a href="topic-sna-u3-t5.html"><span class="num">3.5</span> navigation in networks revisited.</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-sna-act-u3.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-u3.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c8)"><i class="fas fa-layer-group"></i> Unit 4: Small World Models</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Small world experiments, small world models, origins of small world, heavy tails, small diameter, clustering of connectivity, the Erdos-Renyi model, c…</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-sna-u4-t1.html"><span class="num">4.1</span> Small world experiments</a></div><div><a href="topic-sna-u4-t2.html"><span class="num">4.2</span> origins of small world</a></div><div><a href="topic-sna-u4-t3.html"><span class="num">4.3</span> heavy tails</a></div><div><a href="topic-sna-u4-t4.html"><span class="num">4.4</span> clustering of connectivity</a></div><div><a href="topic-sna-u4-t5.html"><span class="num">4.5</span> the Erdos-Renyi model</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-sna-act-u4.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-u4.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+    <div class="content-section">
+      <h2 style="--unit-color:var(--c8)"><i class="fas fa-layer-group"></i> Unit 5: Network Structure and Game Theory</h2>
+      <p class="muted small" style="margin-bottom:.8rem">Network structure: important vertices and the PageRank algorithm, towards rational dynamics in networks, basics of game theory, coloring and consensus…</p>
+      <h3 style="font-size:.95rem;color:var(--text-secondary)">Topics in this unit</h3>
+      <div class="topic-toc" style="margin-top:.5rem">
+        <div class="topic-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem;list-style:none;padding:0">
+          <div><a href="topic-sna-u5-t1.html"><span class="num">5.1</span> Network structure: important vertices and the PageRank…</a></div><div><a href="topic-sna-u5-t2.html"><span class="num">5.2</span> basics of game theory</a></div><div><a href="topic-sna-u5-t3.html"><span class="num">5.3</span> biased voting</a></div><div><a href="topic-sna-u5-t4.html"><span class="num">5.4</span> network formation games</a></div><div><a href="topic-sna-u5-t5.html"><span class="num">5.5</span> behavioral experiments</a></div>
+        </div>
+      </div>
+      <div class="tags mt-2">
+        <a class="btn btn-sm btn-outline" href="subject-sna-act-u5.html"><i class="fas fa-play"></i> Activity</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-u5.html"><i class="fas fa-bullseye"></i> Repeated Questions</a>
+        <a class="btn btn-sm btn-outline" href="subject-sna-pyq-overall.html"><i class="fas fa-list-ol"></i> Overall PYQ</a>
+      </div>
+    </div>
+  </div>
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c8)"><i class="fas fa-trophy"></i> Overall Repeated Questions</h2>
+    <p class="small muted mb-2">The most frequently asked JNTU questions across the whole subject — ideal for final revision.</p>
+    <a class="btn btn-warning" style="background:var(--warning);border-color:var(--warning);color:#fff" href="subject-sna-pyq-overall.html"><i class="fas fa-list-ol"></i> Open Overall PYQ</a>
+  </div>
+  <div class="content-section">
+    <h2 style="--unit-color:var(--c8)"><i class="fas fa-book-open"></i> Text Books</h2>
+    <ul><li>S. Wasserman and K. Faust, Social Network Analysis: Methods and Applications, Cambridge University Press, 1994.</li><li>D. Easley and J. Kleinberg, Networks, Crowds and Markets: Reasoning about a Highly Connected World, 2010.</li></ul>
+    <h3 style="margin-top:1.2rem;font-size:.95rem;color:var(--text-secondary)">Reference Books</h3>
+    <ul><li>Social Network Analysis: Methods and Applications (Structural Analysis in the Social Sciences), Stanley Wasserman, Katherine Faust, 1994.</li></ul>
+  </div>
+  <div style="text-align:center;margin-top:1rem">
+    <a href="subject-sna-act-u1.html" class="btn btn-primary btn-lg"><i class="fas fa-play"></i> Start Unit 1 Activity</a>
+    <a href="subject-sna-pyq-overall.html" class="btn btn-outline btn-lg"><i class="fas fa-bullseye"></i> Overall Repeated Questions</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p><i class="fas fa-graduation-cap"></i> &copy; 2026 M.Tech CSE Learning Hub — JNTU Kakinada. <a href="task.md">About this app</a></p>
+</footer>
+<script src="script.js"></script>
+
+  <!-- ═══════ CELEBOT AI ASSISTANT WIDGET ═══════ -->
+  <button class="celebot-fab" id="celebotFab" title="Ask Celebot AI">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div class="celebot-widget" id="celebotWidget">
+    <div class="cw-header">
+      <div class="cw-header-left">
+        <i class="fas fa-graduation-cap cw-icon"></i>
+        <div>
+          <div class="cw-title">Celebot</div>
+          <div class="cw-subtitle">AI Learning Assistant</div>
+        </div>
+      </div>
+      <div class="cw-header-actions">
+        <button class="cw-btn-icon" id="cwConfigBtn" title="Configure Celebot"><i class="fas fa-cog"></i></button>
+        <button class="cw-btn-icon" id="cwMinimizeBtn" title="Minimize"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="cw-api-bar">
+      <input type="password" id="cwApiKey" placeholder="OpenRouter BYOK key" />
+      <button class="cw-api-save" id="cwApiSave"><i class="fas fa-save"></i></button>
+      <span class="cw-api-status" id="cwApiStatus"></span>
+    </div>
+
+    <div class="cw-messages" id="cwChatBox">
+      <div class="cw-msg cw-bot">
+        <div class="cw-msg-label"><i class="fas fa-graduation-cap"></i> Celebot</div>
+        <div class="cw-msg-body">Hi! I can help you with any M.Tech topic. Ask me to explain a concept, clarify a doubt, or summarize a unit.</div>
+      </div>
+    </div>
+
+    <div class="cw-skills">
+      <button class="cw-skill" data-skill="doubt"><i class="fas fa-question-circle"></i> Clarify Doubt</button>
+      <button class="cw-skill" data-skill="summarize"><i class="fas fa-list-alt"></i> Summarize</button>
+      <button class="cw-skill" data-skill="explain"><i class="fas fa-lightbulb"></i> Explain Topic</button>
+      <button class="cw-skill" data-skill="quiz"><i class="fas fa-puzzle-piece"></i> Quiz Me</button>
+    </div>
+
+    <div class="cw-input-row">
+      <input type="text" id="cwUserInput" placeholder="Ask anything about your subjects..." />
+      <button class="cw-send" id="cwSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Celebot Config Modal -->
+  <div class="cw-config-modal" id="cwConfigModal">
+    <div class="cw-config-card">
+      <h3><i class="fas fa-graduation-cap"></i> Celebot Configuration</h3>
+      <div class="cw-cfg-field">
+        <label>Model</label>
+        <select id="cwCfgModel"></select>
+      </div>
+      <div class="cw-cfg-field">
+        <label>Persona</label>
+        <textarea id="cwCfgPersona" rows="3">You are Celebot, a friendly M.Tech CSE teaching assistant. Explain concepts simply, use examples, and ground answers in the JNTU Kakinada syllabus.</textarea>
+      </div>
+      <div class="cw-cfg-row">
+        <div class="cw-cfg-field"><label>Max Tokens</label><input id="cwCfgTokens" type="number" value="1000" /></div>
+        <div class="cw-cfg-field"><label>Temperature</label><input id="cwCfgTemp" type="number" step="0.1" min="0" max="1.5" value="0.5" /></div>
+      </div>
+      <div class="cw-cfg-actions">
+        <button id="cwCfgClose">Close</button>
+        <button class="cw-cfg-save" id="cwCfgSave">Save</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mathematics · Unit 3 Activity | M.Tech CSE</title>
+<meta name="description" content="Activity quiz for Mathematical Foundations of Computer Science Unit 3">
+<link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="nav-brand">
+    <a href="index.html"><span class="brand-icon"><i class="fas fa-graduation-cap"></i></span>
+      <span>M.Tech CSE<small>JNTUK</small></span></a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+    <a href="semester1.html" class="nav-link"><i class="fas fa-1"></i> Sem 1</a>
+    <a href="semester2.html" class="nav-link"><i class="fas fa-2"></i> Sem 2</a>
+    <a href="semester3.html" class="nav-link"><i class="fas fa-3"></i> Sem 3</a>
+    <a href="semester4.html" class="nav-link"><i class="fas fa-4"></i> Sem 4</a>
+    <a href="glossary.html" class="nav-link"><i class="fas fa-book"></i> Glossary</a>
+  </div>
+  <div class="nav-progress"><i class="fas fa-chart-line"></i><span id="overallProgress">0%</span></div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><a href="semester1.html">Sem 1</a><span class="sep">/</span><a href="subject-mcs.html">Mathematics</a><span class="sep">/</span><a href="subject-mcs.html">Unit 3</a><span class="sep">/</span><span>Activity</span></div>
+<main class="activity-container">
+  <div class="activity-header">
+    <h1><i class="fas fa-tasks"></i> Unit 3 Activity</h1>
+    <p>Mathematical Foundations of Computer Science · Tests of Hypothesis and Significance</p>
+    <p class="small muted">Answer the 12 questions. Score at least 40% to pass and unlock the next unit.</p>
+  </div>
+  <div class="progress-wrapper">
+    <div class="progress-bar"><div class="progress-fill" id="progressBar"></div></div>
+    <div class="progress-text"><span id="answeredCount">0 / 12 answered</span><span id="scoreDisplay">Score: 0</span></div>
+  </div>
+  <div class="quiz-container" id="quizContainer"></div>
+  <div class="quiz-nav" id="quizNav">
+    <button class="btn btn-secondary" id="prevBtn"><i class="fas fa-arrow-left"></i> Prev</button>
+    <button class="btn btn-primary" id="nextBtn" disabled><i class="fas fa-arrow-right"></i> Next</button>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p><i class="fas fa-graduation-cap"></i> &copy; 2026 M.Tech CSE Learning Hub — JNTU Kakinada. <a href="task.md">About this app</a></p>
+</footer>
+<script src="script.js"></script>
+<script>
+  (function () {
+    var questions = [{"q":"Which of the following areas is covered under 'Statistical Decisions'?","correct":0,"options":["Statistical Decisions","Type I and Type II Errors","P Value","Operating Characteristic Curves"],"explanation":"'Statistical Decisions' is one of the five focus areas of this unit.","type":"mcq"},{"q":"Which of the following areas is covered under 'Type I and Type II Errors'?","correct":1,"options":["Statistical Decisions","Type I and Type II Errors","P Value","Operating Characteristic Curves"],"explanation":"'Type I and Type II Errors' is one of the five focus areas of this unit.","type":"mcq"},{"q":"Which of the following areas is covered under 'P Value'?","correct":2,"options":["Statistical Decisions","Type I and Type II Errors","P Value","Operating Characteristic Curves"],"explanation":"'P Value' is one of the five focus areas of this unit.","type":"mcq"},{"q":"Which of the following areas is covered under 'Operating Characteristic Curves'?","correct":3,"options":["Statistical Decisions","Type I and Type II Errors","P Value","Operating Characteristic Curves"],"explanation":"'Operating Characteristic Curves' is one of the five focus areas of this unit.","type":"mcq"},{"q":"Which of the following areas is covered under 'the Chi-Square Test for Goodness of Fit'?","correct":4,"options":["Statistical Decisions","Type I and Type II Errors","P Value","Operating Characteristic Curves"],"explanation":"'the Chi-Square Test for Goodness of Fit' is one of the five focus areas of this unit.","type":"mcq"},{"q":"Which of the following is a topic/term belonging to this unit?","correct":0,"options":["Statistical Decisions","Statistical Hypotheses","Null Hypotheses","Tests of Hypotheses and Significance"],"explanation":"All of the listed options are drawn from this unit; the first is explicitly covered.","type":"mcq"},{"q":"Which of the following is a topic/term belonging to this unit?","correct":0,"options":["Tests of Hypotheses and Significance","Type I and Type II Errors","Level of Significance","Tests Involving the Normal Distribution"],"explanation":"All of the listed options are drawn from this unit; the first is explicitly covered.","type":"mcq"},{"q":"Which of the following is a topic/term belonging to this unit?","correct":0,"options":["Tests Involving the Normal Distribution","One-Tailed and Two-Tailed Tests","P Value","Special Tests of Significance for Large Samples and for Small Samples"],"explanation":"All of the listed options are drawn from this unit; the first is explicitly covered.","type":"mcq"},{"q":"Which of the following is a topic/term belonging to this unit?","correct":0,"options":["Special Tests of Significance for Large Samples and for Small Samples","Relationship between Estimation Theory and Hypothesis Testing","Operating Characteristic Curves","Power of a Test"],"explanation":"All of the listed options are drawn from this unit; the first is explicitly covered.","type":"mcq"},{"q":"Which of the following is a topic/term belonging to this unit?","correct":0,"options":["Power of a Test","Quality Control Charts","Fitting Theoretical Distributions to Sample Frequency Distributions","the Chi-Square Test for Goodness of Fit"],"explanation":"All of the listed options are drawn from this unit; the first is explicitly covered.","type":"mcq"},{"q":"The main theme of this unit best matches which description?","correct":0,"options":["Statistical Decisions, Statistical Hypotheses, Null Hypotheses, Tests of Hypotheses and Significance…","Unrelated subject matter","Only practical exercises","Merely historical background"],"explanation":"The unit text summarises its core theme shown here.","type":"mcq"},{"q":"Complete the statement: This unit focuses on the study of ______.","correct":0,"options":["Statistical Decisions","a totally unrelated field","a trading course","a sports topic"],"explanation":"The first focus area of this unit is 'Statistical Decisions'.","type":"mcq"}];
+    QuizEngine.setMeta('mcs', 3);
+    QuizEngine.returnHref = 'subject-mcs-act-u3.html';
+    QuizEngine.init(questions, { shuffleQuestions: true, shuffleOptions: false });
+    // Guard: if fewer than 1 question, show message
+    if (!questions.length) {
+      document.getElementById('quizContainer').innerHTML = '<div class="results-panel"><h3>No questions available yet.</h3><a class="btn btn-primary" href="subject-mcs.html">Back to Subject</a></div>';
+    }
+  })();
+</script>
+
+  <!-- ═══════ CELEBOT AI ASSISTANT WIDGET ═══════ -->
+  <button class="celebot-fab" id="celebotFab" title="Ask Celebot AI">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div class="celebot-widget" id="celebotWidget">
+    <div class="cw-header">
+      <div class="cw-header-left">
+        <i class="fas fa-graduation-cap cw-icon"></i>
+        <div>
+          <div class="cw-title">Celebot</div>
+          <div class="cw-subtitle">AI Learning Assistant</div>
+        </div>
+      </div>
+      <div class="cw-header-actions">
+        <button class="cw-btn-icon" id="cwConfigBtn" title="Configure Celebot"><i class="fas fa-cog"></i></button>
+        <button class="cw-btn-icon" id="cwMinimizeBtn" title="Minimize"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="cw-api-bar">
+      <input type="password" id="cwApiKey" placeholder="OpenRouter BYOK key" />
+      <button class="cw-api-save" id="cwApiSave"><i class="fas fa-save"></i></button>
+      <span class="cw-api-status" id="cwApiStatus"></span>
+    </div>
+
+    <div class="cw-messages" id="cwChatBox">
+      <div class="cw-msg cw-bot">
+        <div class="cw-msg-label"><i class="fas fa-graduation-cap"></i> Celebot</div>
+        <div class="cw-msg-body">Hi! I can help you with any M.Tech topic. Ask me to explain a concept, clarify a doubt, or summarize a unit.</div>
+      </div>
+    </div>
+
+    <div class="cw-skills">
+      <button class="cw-skill" data-skill="doubt"><i class="fas fa-question-circle"></i> Clarify Doubt</button>
+      <button class="cw-skill" data-skill="summarize"><i class="fas fa-list-alt"></i> Summarize</button>
+      <button class="cw-skill" data-skill="explain"><i class="fas fa-lightbulb"></i> Explain Topic</button>
+      <button class="cw-skill" data-skill="quiz"><i class="fas fa-puzzle-piece"></i> Quiz Me</button>
+    </div>
+
+    <div class="cw-input-row">
+      <input type="text" id="cwUserInput" placeholder="Ask anything about your subjects..." />
+      <button class="cw-send" id="cwSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Celebot Config Modal -->
+  <div class="cw-config-modal" id="cwConfigModal">
+    <div class="cw-config-card">
+      <h3><i class="fas fa-graduation-cap"></i> Celebot Configuration</h3>
+      <div class="cw-cfg-field">
+        <label>Model</label>
+        <select id="cwCfgModel"></select>
+      </div>
+      <div class="cw-cfg-field">
+        <label>Persona</label>
+        <textarea id="cwCfgPersona" rows="3">You are Celebot, a friendly M.Tech CSE teaching assistant. Explain concepts simply, use examples, and ground answers in the JNTU Kakinada syllabus.</textarea>
+      </div>
+      <div class="cw-cfg-row">
+        <div class="cw-cfg-field"><label>Max Tokens</label><input id="cwCfgTokens" type="number" value="1000" /></div>
+        <div class="cw-cfg-field"><label>Temperature</label><input id="cwCfgTemp" type="number" step="0.1" min="0" max="1.5" value="0.5" /></div>
+      </div>
+      <div class="cw-cfg-actions">
+        <button id="cwCfgClose">Close</button>
+        <button class="cw-cfg-save" id="cwCfgSave">Save</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

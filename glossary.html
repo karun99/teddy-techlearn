@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glossary | M.Tech CSE</title>
+  <meta name="description" content="Glossary of key M.Tech Computer Science terms from the JNTU Kakinada syllabus.">
+  <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <nav class="main-nav">
+    <div class="nav-brand">
+      <a href="index.html"><span class="brand-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span>M.Tech CSE<small>JNTUK</small></span></a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+      <a href="semester1.html" class="nav-link"><i class="fas fa-1"></i> Sem 1</a>
+      <a href="semester2.html" class="nav-link"><i class="fas fa-2"></i> Sem 2</a>
+      <a href="semester3.html" class="nav-link"><i class="fas fa-3"></i> Sem 3</a>
+      <a href="semester4.html" class="nav-link"><i class="fas fa-4"></i> Sem 4</a>
+      <a href="glossary.html" class="nav-link"><i class="fas fa-book"></i> Glossary</a>
+    </div>
+    <div class="nav-progress"><i class="fas fa-chart-line"></i><span id="overallProgress">0%</span></div>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="sep">/</span>
+    <span>Glossary</span>
+  </div>
+
+  <header class="unit-header" style="--unit-color:var(--c1)">
+    <span class="unit-badge">Reference</span>
+    <h1><i class="fas fa-book"></i> Glossary</h1>
+    <p class="unit-subtitle">Key terms used across the M.Tech CSE programme — a quick reference to help you revise concepts faster.</p>
+  </header>
+
+  <main>
+    <div class="container container-narrow">
+      <div class="glossary-search">
+        <input type="text" id="glossarySearch" placeholder="Search glossary… (e.g. MapReduce)">
+      </div>
+      <div class="glossary-grid" id="glossaryGrid">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p><i class="fas fa-graduation-cap"></i> &copy; 2026 M.Tech CSE Learning Hub — JNTU Kakinada. <a href="task.md">About this app</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    (function () {
+      var terms = [
+        { t: 'Algorithm', c: 'Algorithms', d: 'A finite, well-defined sequence of steps to solve a problem; analysed for correctness and efficiency.' },
+        { t: 'ADT (Abstract Data Type)', c: 'Data Structures', d: 'A data type defined by its behaviour (operations) rather than its implementation, e.g. List, Stack, Queue.' },
+        { t: 'AVL Tree', c: 'Data Structures', d: 'A self-balancing binary search tree where the heights of the two child subtrees differ by at most one.' },
+        { t: 'B-Tree', c: 'Data Structures', d: 'A self-balancing tree that maintains sorted data and allows searches, insertions and deletions in logarithmic time.' },
+        { t: 'Bayes Theorem', c: 'Mathematics', d: 'A rule for computing conditional probability using prior knowledge: P(A|B) = P(B|A)P(A)/P(B).' },
+        { t: 'Big Data', c: 'Big Data', d: 'Datasets too large or complex for traditional processing; handled by tools like Hadoop and Spark.' },
+        { t: 'Chromatic Number', c: 'Graph Theory', d: 'The minimum number of colours needed to colour a graph so that no two adjacent vertices share a colour.' },
+        { t: 'Cloud Computing', c: 'Cloud', d: 'Delivery of computing services (servers, storage, databases, networking) over the internet on a pay-as-you-go basis.' },
+        { t: 'Concurrency Control', c: 'Databases', d: 'Mechanisms ensuring that concurrent transactions execute correctly and preserve consistency (e.g. locking, timestamps).' },
+        { t: 'Convolutional Neural Network', c: 'Deep Learning', d: 'A deep network using convolution operations, well suited for image and spatial data.' },
+        { t: 'Cryptography', c: 'Security', d: 'The practice and study of techniques for secure communication in the presence of adversaries.' },
+        { t: 'Data Mining', c: 'Databases', d: 'Discovering patterns and knowledge from large datasets using statistics, machine learning and databases.' },
+        { t: 'Decision Tree', c: 'Machine Learning', d: 'A tree-structured model that splits data based on feature tests (ID3, C4.5, CART) for classification or regression.' },
+        { t: 'Distributed Shared Memory (DSM)', c: 'OS', d: 'A distributed memory architecture where processes on separate nodes share a common virtual address space.' },
+        { t: 'DWT (Discrete Wavelet Transform)', c: 'Image Processing', d: 'A transform that decomposes a signal into wavelets, enabling multi-resolution analysis and compression.' },
+        { t: 'Euler Path', c: 'Graph Theory', d: 'A path in a graph that visits every edge exactly once; an Euler circuit returns to the start.' },
+        { t: 'Fuzzy Logic', c: 'Soft Computing', d: 'A form of many-valued logic dealing with approximate reasoning rather than fixed true/false values.' },
+        { t: 'Genetic Algorithm', c: 'Soft Computing', d: 'An optimisation heuristic inspired by natural selection, using mutation, crossover and selection.' },
+        { t: 'Graph', c: 'Graph Theory', d: 'A structure of nodes (vertices) and edges used to model pairwise relations; studied for routing and networks.' },
+        { t: 'Hadoop', c: 'Big Data', d: 'An open-source framework for distributed storage (HDFS) and processing (MapReduce) of large datasets.' },
+        { t: 'Hash Table', c: 'Data Structures', d: 'A data structure mapping keys to values using a hash function, with collision resolution strategies.' },
+        { t: 'Histogram Equalization', c: 'Image Processing', d: 'An image enhancement technique that redistributes intensity values to improve contrast.' },
+        { t: 'Homomorphism', c: 'Mathematics', d: 'A structure-preserving map between two algebraic structures such as groups or monoids.' },
+        { t: 'IoT (Internet of Things)', c: 'IoT', d: 'A network of physical objects embedded with sensors and software that connect and exchange data.' },
+        { t: 'k-Nearest Neighbour', c: 'Machine Learning', d: 'A simple classifier that assigns a label based on the majority class among the k nearest training points.' },
+        { t: 'Localization', c: 'Networks', d: 'Determining the physical position of nodes in a wireless sensor network.' },
+        { t: 'MapReduce', c: 'Big Data', d: 'A programming model that processes large data sets via parallel map and reduce functions.' },
+        { t: 'Mermaid', c: 'Web', d: 'A JavaScript library for rendering diagrams (flowcharts, graphs) from text, used in this app.' },
+        { t: 'MPI (Message Passing Interface)', c: 'HPC', d: 'A standard for writing parallel programs using message passing between processes.' },
+        { t: 'Mutual Exclusion', c: 'OS', d: 'A guarantee that only one process accesses a shared resource at a time.' },
+        { t: 'NoSQL', c: 'Databases', d: 'Non-relational databases (key-value, document, graph) providing flexible schemas and horizontal scaling.' },
+        { t: 'Normalization', c: 'Databases', d: 'Organising database tables to reduce redundancy and dependency (1NF, 2NF, 3NF, BCNF).' },
+        { t: 'OpenMP', c: 'HPC', d: 'An API for shared-memory multiprocessing programming using compiler directives.' },
+        { t: 'Overfitting', c: 'Machine Learning', d: 'When a model learns the training data too well and fails to generalise to new data.' },
+        { t: 'PageRank', c: 'Networks', d: 'An algorithm that ranks web pages based on the structure of links pointing to them.' },
+        { t: 'Path & Circuit', c: 'Graph Theory', d: 'A path is a sequence of vertices with edges between them; a circuit is a closed path.' },
+        { t: 'Priority Queue', c: 'Data Structures', d: 'An ADT where the element with the highest priority is removed first, often realised using a heap.' },
+        { t: 'RDBMS', c: 'Databases', d: 'A relational database management system storing data in structured tables with relationships.' },
+        { t: 'RDD (Resilient Distributed Dataset)', c: 'Big Data', d: 'An immutable, partitioned collection of records in Apache Spark that supports fault-tolerant parallel operations.' },
+        { t: 'Segmentation', c: 'Image Processing', d: 'Partitioning an image into meaningful regions to simplify analysis or object recognition.' },
+        { t: 'Serializability', c: 'Databases', d: 'A transaction schedule property ensuring the result equals some serial order of the transactions.' },
+        { t: 'Spanning Tree', c: 'Graph Theory', d: 'A connected subgraph that includes all vertices with the minimum number of edges and no cycles.' },
+        { t: 'Spark', c: 'Big Data', d: 'A fast in-memory cluster-computing framework for large-scale data processing and streaming.' },
+        { t: 'SVM (Support Vector Machine)', c: 'Machine Learning', d: 'A supervised classifier that finds a maximal-margin hyperplane that best separates classes.' },
+        { t: 'TCP', c: 'Networks', d: 'A connection-oriented transport protocol providing reliable, ordered delivery of a byte stream.' },
+        { t: 'Type I / II Error', c: 'Mathematics', d: 'Type I is rejecting a true null hypothesis; Type II is failing to reject a false null hypothesis.' },
+        { t: 'UDP', c: 'Networks', d: 'A connectionless transport protocol providing fast but unreliable datagram delivery.' },
+        { t: 'Virtualization', c: 'Cloud', d: 'Creating virtual versions of hardware or resources, e.g. running multiple VMs on one physical machine.' },
+        { t: 'Watermarking', c: 'Image Processing', d: 'Embedding a hidden signal in media for copyright protection and ownership verification.' },
+        { t: 'WSN (Wireless Sensor Network)', c: 'Networks', d: 'A network of spatially distributed autonomous sensors monitoring physical conditions.' }
+      ];
+
+      var container = document.getElementById('glossaryGrid');
+      function render(list) {
+        container.innerHTML = list.map(function (g) {
+          return '<div class="card">' +
+            '<h3 style="color:var(--primary)">' + g.t + '</h3>' +
+            '<p class="sub" style="margin-bottom:.4rem"><span class="tag core">' + g.c + '</span></p>' +
+            '<p style="font-size:.9rem">' + g.d + '</p></div>';
+        }).join('');
+      }
+      render(terms);
+
+      document.getElementById('glossarySearch').addEventListener('input', function (e) {
+        var q = e.target.value.toLowerCase();
+        render(terms.filter(function (g) {
+          return (g.t + ' ' + g.c + ' ' + g.d).toLowerCase().indexOf(q) !== -1;
+        }));
+      });
+    })();
+  </script>
+
+  <!-- ═══════ CELEBOT AI ASSISTANT WIDGET ═══════ -->
+  <button class="celebot-fab" id="celebotFab" title="Ask Celebot AI">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div class="celebot-widget" id="celebotWidget">
+    <div class="cw-header">
+      <div class="cw-header-left">
+        <i class="fas fa-graduation-cap cw-icon"></i>
+        <div>
+          <div class="cw-title">Celebot</div>
+          <div class="cw-subtitle">AI Learning Assistant</div>
+        </div>
+      </div>
+      <div class="cw-header-actions">
+        <button class="cw-btn-icon" id="cwConfigBtn" title="Configure Celebot"><i class="fas fa-cog"></i></button>
+        <button class="cw-btn-icon" id="cwMinimizeBtn" title="Minimize"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="cw-api-bar">
+      <input type="password" id="cwApiKey" placeholder="OpenRouter BYOK key" />
+      <button class="cw-api-save" id="cwApiSave"><i class="fas fa-save"></i></button>
+      <span class="cw-api-status" id="cwApiStatus"></span>
+    </div>
+
+    <div class="cw-messages" id="cwChatBox">
+      <div class="cw-msg cw-bot">
+        <div class="cw-msg-label"><i class="fas fa-graduation-cap"></i> Celebot</div>
+        <div class="cw-msg-body">Hi! I can help you with any M.Tech topic. Ask me to explain a concept, clarify a doubt, or summarize a unit.</div>
+      </div>
+    </div>
+
+    <div class="cw-skills">
+      <button class="cw-skill" data-skill="doubt"><i class="fas fa-question-circle"></i> Clarify Doubt</button>
+      <button class="cw-skill" data-skill="summarize"><i class="fas fa-list-alt"></i> Summarize</button>
+      <button class="cw-skill" data-skill="explain"><i class="fas fa-lightbulb"></i> Explain Topic</button>
+      <button class="cw-skill" data-skill="quiz"><i class="fas fa-puzzle-piece"></i> Quiz Me</button>
+    </div>
+
+    <div class="cw-input-row">
+      <input type="text" id="cwUserInput" placeholder="Ask anything about your subjects..." />
+      <button class="cw-send" id="cwSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Celebot Config Modal -->
+  <div class="cw-config-modal" id="cwConfigModal">
+    <div class="cw-config-card">
+      <h3><i class="fas fa-graduation-cap"></i> Celebot Configuration</h3>
+      <div class="cw-cfg-field">
+        <label>Model</label>
+        <select id="cwCfgModel"></select>
+      </div>
+      <div class="cw-cfg-field">
+        <label>Persona</label>
+        <textarea id="cwCfgPersona" rows="3">You are Celebot, a friendly M.Tech CSE teaching assistant. Explain concepts simply, use examples, and ground answers in the JNTU Kakinada syllabus.</textarea>
+      </div>
+      <div class="cw-cfg-row">
+        <div class="cw-cfg-field"><label>Max Tokens</label><input id="cwCfgTokens" type="number" value="1000" /></div>
+        <div class="cw-cfg-field"><label>Temperature</label><input id="cwCfgTemp" type="number" step="0.1" min="0" max="1.5" value="0.5" /></div>
+      </div>
+      <div class="cw-cfg-actions">
+        <button id="cwCfgClose">Close</button>
+        <button class="cw-cfg-save" id="cwCfgSave">Save</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

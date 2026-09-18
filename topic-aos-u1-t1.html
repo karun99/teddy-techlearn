@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adv. Operating Systems · Unit 1 · 1.1 Architectures of distributed systems | M.Tech CSE</title>
+<meta name="description" content="Advanced Operating Systems Unit 1 topic 1.1: Architectures of distributed systems">
+<link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad:true, theme:'base', themeVariables:{ primaryColor:'#2563eb', primaryTextColor:'#ffffff', primaryBorderColor:'#1d4ed8', lineColor:'#64748b', fontSize:'14px' } });</script>
+</head>
+<body>
+
+<nav class="main-nav">
+  <div class="nav-brand">
+    <a href="index.html"><span class="brand-icon"><i class="fas fa-graduation-cap"></i></span>
+      <span>M.Tech CSE<small>JNTUK</small></span></a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu"><i class="fas fa-bars"></i></button>
+  <div class="nav-links" id="navLinks">
+    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+    <a href="semester1.html" class="nav-link"><i class="fas fa-1"></i> Sem 1</a>
+    <a href="semester2.html" class="nav-link"><i class="fas fa-2"></i> Sem 2</a>
+    <a href="semester3.html" class="nav-link"><i class="fas fa-3"></i> Sem 3</a>
+    <a href="semester4.html" class="nav-link"><i class="fas fa-4"></i> Sem 4</a>
+    <a href="glossary.html" class="nav-link"><i class="fas fa-book"></i> Glossary</a>
+  </div>
+  <div class="nav-progress"><i class="fas fa-chart-line"></i><span id="overallProgress">0%</span></div>
+</nav>
+<div class="breadcrumb"><a href="index.html">Home</a><span class="sep">/</span><a href="semester1.html">Sem 1</a><span class="sep">/</span><a href="subject-aos.html">Adv. Operating Systems</a><span class="sep">/</span><a href="subject-aos.html">Unit 1</a><span class="sep">/</span><span>1.1</span></div>
+<header class="unit-header" style="--unit-color:var(--c6)">
+  <span class="unit-badge">Unit 1 &middot; Topic 1.1</span>
+  <h1>Architectures of distributed systems</h1>
+  <p class="unit-subtitle">Adv. Operating Systems — Architectures and Mutual Exclusion</p>
+</header>
+<div class="content-container">
+  <div class="topic-toc">
+    <h3><i class="fas fa-list"></i> Architectures and Mutual Exclusion</h3>
+    <div class="topic-list" style="list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem">
+      <li><a href="topic-aos-u1-t1.html" style="border-color:var(--c6);background:var(--bg-hover)"><span class="num">1.1</span> Architectures of distributed systems</a></li><li><a href="topic-aos-u1-t2.html"><span class="num">1.2</span> communication networks</a></li><li><a href="topic-aos-u1-t3.html"><span class="num">1.3</span> Lamport's logical clocks</a></li><li><a href="topic-aos-u1-t4.html"><span class="num">1.4</span> causal ordering of messages</a></li><li><a href="topic-aos-u1-t5.html"><span class="num">1.5</span> termination detection. Distributed mutual exclusion: introduction</a></li>
+    </div>
+  </div>
+  <div class="content-section animate-fadeIn">
+    <h2 style="--unit-color:var(--c6)"><i class="fas fa-file-lines"></i> Architectures of distributed systems</h2>
+    <p>Architectures of distributed systems, system architecture types, issues in distributed operating systems</p><h3><i class="fas fa-angles-right"></i> Key Concepts</h3><ul><li>Architectures of distributed systems</li><li>system architecture types</li><li>issues in distributed operating systems</li></ul>
+<div class="key-points">
+  <h3><i class="fas fa-lightbulb"></i> Key Points</h3>
+  <ul><li>Core concepts: Architectures of distributed systems, system architecture types, issues in distributed operating systems</li><li>Practise explaining each listed concept in your own words.</li><li>Revise worked examples and prior-year questions for this topic.</li><li>Link this topic to the unit's overall learning outcomes.</li></ul>
+</div>
+<div class="info-box">
+  <h3><i class="fas fa-circle-info"></i> Where this fits</h3>
+  <ul><li>Part of Unit 1 — Architectures and Mutual Exclusion</li><li>Links to the unit's overall learning outcomes.</li></ul>
+</div>
+    <div class="info-box" style="margin-top:1.5rem">
+      <h3><i class="fas fa-hourglass-half"></i> Learning Tip</h3>
+      <ul>
+        <li>Spend 15–20 minutes on this topic.</li>
+        <li>Then attempt the <a href="subject-aos-act-u1.html">unit activity</a> to check your understanding.</li>
+        <li>Review the <a href="subject-aos-pyq-u1.html">repeated questions</a> for this unit to focus on exam priorities.</li>
+      </ul>
+    </div>
+  </div>
+  
+  <div class="unit-nav">
+    <span></span>
+    <div class="nav-group">
+      <a href="subject-aos-pyq-u1.html" class="btn btn-outline"><i class="fas fa-bullseye"></i> Repeated Q's</a>
+      <a href="subject-aos-act-u1.html" class="btn btn-primary"><i class="fas fa-play"></i> Activity</a>
+    </div>
+    <a href="topic-aos-u1-t2.html" class="btn btn-secondary">Next <i class="fas fa-arrow-right"></i></a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p><i class="fas fa-graduation-cap"></i> &copy; 2026 M.Tech CSE Learning Hub — JNTU Kakinada. <a href="task.md">About this app</a></p>
+</footer>
+<script src="script.js"></script>
+
+  <!-- ═══════ CELEBOT AI ASSISTANT WIDGET ═══════ -->
+  <button class="celebot-fab" id="celebotFab" title="Ask Celebot AI">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div class="celebot-widget" id="celebotWidget">
+    <div class="cw-header">
+      <div class="cw-header-left">
+        <i class="fas fa-graduation-cap cw-icon"></i>
+        <div>
+          <div class="cw-title">Celebot</div>
+          <div class="cw-subtitle">AI Learning Assistant</div>
+        </div>
+      </div>
+      <div class="cw-header-actions">
+        <button class="cw-btn-icon" id="cwConfigBtn" title="Configure Celebot"><i class="fas fa-cog"></i></button>
+        <button class="cw-btn-icon" id="cwMinimizeBtn" title="Minimize"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="cw-api-bar">
+      <input type="password" id="cwApiKey" placeholder="OpenRouter BYOK key" />
+      <button class="cw-api-save" id="cwApiSave"><i class="fas fa-save"></i></button>
+      <span class="cw-api-status" id="cwApiStatus"></span>
+    </div>
+
+    <div class="cw-messages" id="cwChatBox">
+      <div class="cw-msg cw-bot">
+        <div class="cw-msg-label"><i class="fas fa-graduation-cap"></i> Celebot</div>
+        <div class="cw-msg-body">Hi! I can help you with any M.Tech topic. Ask me to explain a concept, clarify a doubt, or summarize a unit.</div>
+      </div>
+    </div>
+
+    <div class="cw-skills">
+      <button class="cw-skill" data-skill="doubt"><i class="fas fa-question-circle"></i> Clarify Doubt</button>
+      <button class="cw-skill" data-skill="summarize"><i class="fas fa-list-alt"></i> Summarize</button>
+      <button class="cw-skill" data-skill="explain"><i class="fas fa-lightbulb"></i> Explain Topic</button>
+      <button class="cw-skill" data-skill="quiz"><i class="fas fa-puzzle-piece"></i> Quiz Me</button>
+    </div>
+
+    <div class="cw-input-row">
+      <input type="text" id="cwUserInput" placeholder="Ask anything about your subjects..." />
+      <button class="cw-send" id="cwSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Celebot Config Modal -->
+  <div class="cw-config-modal" id="cwConfigModal">
+    <div class="cw-config-card">
+      <h3><i class="fas fa-graduation-cap"></i> Celebot Configuration</h3>
+      <div class="cw-cfg-field">
+        <label>Model</label>
+        <select id="cwCfgModel"></select>
+      </div>
+      <div class="cw-cfg-field">
+        <label>Persona</label>
+        <textarea id="cwCfgPersona" rows="3">You are Celebot, a friendly M.Tech CSE teaching assistant. Explain concepts simply, use examples, and ground answers in the JNTU Kakinada syllabus.</textarea>
+      </div>
+      <div class="cw-cfg-row">
+        <div class="cw-cfg-field"><label>Max Tokens</label><input id="cwCfgTokens" type="number" value="1000" /></div>
+        <div class="cw-cfg-field"><label>Temperature</label><input id="cwCfgTemp" type="number" step="0.1" min="0" max="1.5" value="0.5" /></div>
+      </div>
+      <div class="cw-cfg-actions">
+        <button id="cwCfgClose">Close</button>
+        <button class="cw-cfg-save" id="cwCfgSave">Save</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

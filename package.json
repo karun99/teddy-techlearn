@@ -1,0 +1,14 @@
+{
+  "name": "mtech-cse-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.0.0",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.8.0",
+    "xlsx": "^0.18.5",
+    "jszip": "^3.10.1",
+    "cheerio": "^1.0.0"
+  }
+}

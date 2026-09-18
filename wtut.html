@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>WTUT · Full Stack Training Hub</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.1/full/pyodide.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/meshesha/pptxjs@master/dist/pptxjs.full.min.js"></script>
+    <style>
+        :root {
+            --bg-primary: #08080f;
+            --bg-secondary: rgba(14, 14, 26, 0.92);
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --bg-input: rgba(0, 0, 0, 0.5);
+            --bg-hover: rgba(255, 255, 255, 0.07);
+            --bg-editor: #0a0a18;
+            --bg-code: #0d0d1a;
+            --text-primary: #f0f0f8;
+            --text-secondary: rgba(255, 255, 255, 0.82);
+            --text-muted: rgba(255, 255, 255, 0.45);
+            --text-dim: rgba(255, 255, 255, 0.2);
+            --border-color: rgba(255, 255, 255, 0.06);
+            --border-light: rgba(255, 255, 255, 0.03);
+            --accent: #6c8cff;
+            --accent-hover: #8aa8ff;
+            --accent-glow: rgba(108, 140, 255, 0.15);
+            --accent-secondary: #a78bfa;
+            --accent-tertiary: #f472b6;
+            --celebot: #34d399;
+            --celebot-glow: rgba(52, 211, 153, 0.18);
+            --sql-color: #4ade80;
+            --nosql-color: #fbbf24;
+            --html-color: #f472b6;
+            --css-color: #60a5fa;
+            --js-color: #fcd34d;
+            --ts-color: #34d399;
+            --py-color: #4584b6;
+            --shadow: rgba(0, 0, 0, 0.6);
+            --radius: 1.2rem;
+            --radius-sm: 0.7rem;
+            --font: 'Space Grotesk', sans-serif;
+            --serif: 'Source Serif 4', serif;
+            --mono: 'Fira Code', monospace;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="light"] {
+            --bg-primary: #f0f2f7;
+            --bg-secondary: rgba(255, 255, 255, 0.95);
+            --bg-card: rgba(0, 0, 0, 0.03);
+            --bg-input: rgba(0, 0, 0, 0.05);
+            --bg-editor: #f8f8fc;
+            --bg-code: #f0f0f8;
+            --bg-hover: rgba(0, 0, 0, 0.05);
+            --text-primary: #1a1a2e;
+            --text-secondary: rgba(0, 0, 0, 0.8);
+            --text-muted: rgba(0, 0, 0, 0.5);
+            --text-dim: rgba(0, 0, 0, 0.2);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-light: rgba(0, 0, 0, 0.04);
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background var(--transition), color var(--transition);
+            min-height: 100vh;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+
+        .glass-nav {
+            position: sticky; top: 0; z-index: 100;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.4rem 0;
+            transition: background var(--transition);
+        }
+        .nav-inner {
+            max-width: 1440px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 0.3rem 1rem;
+        }
+        .nav-brand { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--text-primary); }
+        .nav-brand .brand-icon {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, var(--accent), var(--accent-secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: #fff;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        .nav-brand h1 {
+            font-family: var(--serif); font-size: 1.2rem; font-weight: 700; font-style: italic;
+            background: linear-gradient(135deg, #fff 55%, var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .nav-brand span { font-size: 0.5rem; color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); display: block; margin-top: -0.15rem; }
+        .nav-actions { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+        .nav-actions .theme-toggle {
+            background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted);
+            padding: 0.15rem 0.6rem; border-radius: 60px; font-size: 0.55rem; cursor: pointer;
+            font-family: var(--font); transition: var(--transition); display: flex; align-items: center; gap: 0.2rem;
+        }
+        .nav-actions .theme-toggle:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .nav-actions .badge-status {
+            font-size: 0.45rem; background: var(--accent-glow); color: var(--accent);
+            padding: 0.05rem 0.6rem; border-radius: 30px; border: 1px solid var(--accent);
+            display: flex; align-items: center; gap: 0.2rem;
+        }
+
+        .hero-section { padding: 1rem 0 0.6rem; text-align: center; border-bottom: 1px solid var(--border-color); position: relative; overflow: hidden; }
+        .hero-section::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(ellipse at center, var(--accent-glow) 0%, transparent 70%);
+            opacity: 0.2; pointer-events: none; animation: heroPulse 10s ease-in-out infinite alternate;
+        }
+        @keyframes heroPulse {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.15; }
+            100% { transform: scale(1.2) rotate(3deg); opacity: 0.3; }
+        }
+        .hero-section .hero-content { position: relative; z-index: 1; }
+        .hero-section h2 {
+            font-family: var(--serif); font-size: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 700; font-style: italic;
+            background: linear-gradient(135deg, #fff 35%, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 0.2rem;
+        }
+        .hero-section p { font-size: clamp(0.65rem, 0.8vw, 0.8rem); color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); max-width: 600px; margin: 0 auto 0.4rem; }
+
+        .api-bar {
+            background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm);
+            padding: 0.3rem 0.8rem; margin: 0.3rem auto 0; max-width: 640px;
+            display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: center;
+        }
+        .api-bar input {
+            flex: 1; min-width: 160px; background: var(--bg-input); border: 1px solid var(--border-color);
+            border-radius: 30px; padding: 0.2rem 0.6rem; color: var(--text-primary);
+            font-family: var(--font); font-size: 0.55rem; outline: none; transition: border var(--transition);
+        }
+        .api-bar input:focus { border-color: var(--accent); }
+        .api-bar input::placeholder { color: var(--text-dim); }
+        .api-bar .api-status { font-size: 0.45rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.2rem; }
+        .api-bar .api-status .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+        .api-bar .api-status .dot.green { background: #4ade80; }
+        .api-bar .api-status .dot.red { background: #f87171; }
+        .api-bar .api-status .dot.yellow { background: #fbbf24; }
+        .api-bar .api-actions { display: flex; gap: 0.2rem; }
+        .api-bar .api-actions button {
+            background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted);
+            padding: 0.1rem 0.5rem; border-radius: 30px; font-size: 0.4rem; cursor: pointer; font-family: var(--font); transition: var(--transition);
+        }
+        .api-bar .api-actions button:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .api-bar .api-actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .api-bar .api-actions button.primary:hover { opacity: 0.85; }
+
+        .lang-tabs {
+            display: flex; gap: 0.2rem; background: var(--bg-card); padding: 0.1rem;
+            border-radius: 30px; border: 1px solid var(--border-color); flex-wrap: wrap;
+        }
+        .lang-tabs button {
+            background: transparent; border: none; color: var(--text-muted); padding: 0.15rem 0.6rem;
+            border-radius: 30px; font-size: 0.5rem; cursor: pointer; font-family: var(--font);
+            transition: var(--transition); display: flex; align-items: center; gap: 0.15rem;
+        }
+        .lang-tabs button:hover { color: var(--text-primary); background: var(--bg-hover); }
+        .lang-tabs button.active { background: var(--accent); color: #fff; box-shadow: 0 0 20px var(--accent-glow); }
+        .lang-tabs button .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+        .dot-html { background: var(--html-color); }
+        .dot-css { background: var(--css-color); }
+        .dot-js { background: var(--js-color); }
+        .dot-ts { background: var(--ts-color); }
+        .dot-sql { background: var(--sql-color); }
+        .dot-nosql { background: var(--nosql-color); }
+        .dot-py { background: var(--py-color); }
+        .dot-celebot { background: var(--celebot); }
+
+        .app-layout {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem;
+            padding: 0.8rem 1.5rem 1.2rem; max-width: 1440px; margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        .chat-panel {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: var(--radius); border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; overflow: hidden; min-height: 400px; transition: all var(--transition);
+        }
+        .chat-panel .panel-header { padding: 0.4rem 1rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem; }
+        .chat-panel .panel-header .title { font-size: 0.65rem; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 0.3rem; }
+        .chat-panel .panel-header .title i { color: var(--accent); }
+        .celebot .chat-panel .panel-header .title i { color: var(--celebot); }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 0.4rem 0.8rem; display: flex; flex-direction: column; gap: 0.3rem; min-height: 160px; max-height: 400px; }
+        .msg { max-width: 92%; padding: 0.3rem 0.7rem; border-radius: 12px; font-size: 0.7rem; line-height: 1.5; animation: fadeIn 0.25s ease; word-wrap: break-word; }
+        .msg.user { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
+        .msg.bot { align-self: flex-start; background: var(--bg-input); border: 1px solid var(--border-color); border-bottom-left-radius: 4px; }
+        .celebot .msg.bot { border-left: 2px solid var(--celebot); }
+        .msg.bot .label { font-size: 0.45rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 0.1rem; }
+        .msg.bot code, .msg.bot .code-inline { font-family: var(--mono); font-size: 0.6rem; background: var(--bg-card); padding: 0.05rem 0.3rem; border-radius: 4px; color: var(--accent); }
+        .msg.bot pre { background: var(--bg-code); padding: 0.2rem 0.4rem; border-radius: 6px; overflow-x: auto; font-size: 0.55rem; font-family: var(--mono); border: 1px solid var(--border-color); margin: 0.15rem 0; white-space: pre-wrap; color: var(--text-secondary); }
+        .think-box {
+            background: var(--bg-card); border-left: 2px solid var(--celebot); border-radius: 6px;
+            padding: 0.25rem 0.5rem; margin: 0.2rem 0; font-size: 0.6rem; color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+        .think-box .think-toggle { cursor: pointer; display: flex; align-items: center; gap: 0.3rem; font-weight: 600; color: var(--celebot); }
+        .think-box .think-body { display: none; margin-top: 0.2rem; }
+        .think-box.open .think-body { display: block; }
+        .skill-chip {
+            display: inline-flex; align-items: center; gap: 0.25rem; margin: 0.1rem 0.2rem 0.1rem 0;
+            padding: 0.05rem 0.5rem; border-radius: 30px; font-size: 0.5rem; cursor: pointer;
+            border: 1px solid var(--border-color); color: var(--text-muted); background: var(--bg-card); transition: var(--transition);
+        }
+        .skill-chip:hover { border-color: var(--celebot); color: var(--celebot); background: var(--bg-hover); }
+        .skill-chip .ico { color: var(--celebot); }
+        .input-row { display: flex; gap: 0.3rem; padding: 0.3rem 0.8rem 0.5rem; border-top: 1px solid var(--border-color); background: var(--bg-input); border-radius: 0 0 var(--radius) var(--radius); }
+        .input-row input { flex: 1; padding: 0.25rem 0.6rem; border: 1px solid var(--border-color); border-radius: 30px; background: var(--bg-card); color: var(--text-primary); font-family: var(--font); font-size: 0.6rem; outline: none; transition: border var(--transition); }
+        .input-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .input-row input::placeholder { color: var(--text-dim); }
+        .input-row button { background: var(--accent); border: none; color: #fff; padding: 0.2rem 0.7rem; border-radius: 30px; font-size: 0.5rem; cursor: pointer; font-family: var(--font); transition: var(--transition); display: flex; align-items: center; gap: 0.2rem; white-space: nowrap; }
+        .celebot .input-row button { background: var(--celebot); }
+        .input-row button:hover { opacity: 0.9; transform: scale(1.02); }
+        .input-row button:disabled { opacity: 0.4; cursor: default; transform: none; }
+
+        .code-panel {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: var(--radius); border: 1px solid var(--border-color);
+            display: flex; flex-direction: column; overflow: hidden; min-height: 400px; transition: all var(--transition);
+        }
+        .code-panel .panel-header { padding: 0.4rem 1rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem; }
+        .code-panel .panel-header .title { font-size: 0.65rem; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; gap: 0.3rem; }
+        .code-panel .panel-header .title i { color: var(--accent-secondary); }
+        .code-panel .panel-header .actions { display: flex; gap: 0.2rem; align-items: center; flex-wrap: wrap; }
+        .code-panel .panel-header .actions button { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.1rem 0.5rem; border-radius: 30px; font-size: 0.4rem; cursor: pointer; font-family: var(--font); transition: var(--transition); display: flex; align-items: center; gap: 0.15rem; }
+        .code-panel .panel-header .actions button:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--accent); }
+        .code-panel .panel-header .actions button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+        .code-panel .panel-header .actions button.primary:hover { opacity: 0.85; }
+        .code-editor { flex: 1; background: var(--bg-editor); padding: 0.4rem 0.6rem; overflow: auto; font-family: var(--mono); font-size: 0.6rem; line-height: 1.7; min-height: 140px; border-bottom: 1px solid var(--border-color); position: relative; }
+        .code-editor textarea { width: 100%; height: 100%; min-height: 120px; background: transparent; border: none; color: var(--text-primary); font-family: var(--mono); font-size: 0.6rem; line-height: 1.7; outline: none; resize: vertical; tab-size: 2; }
+        .code-editor textarea::placeholder { color: var(--text-dim); }
+        .lang-indicator { display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.05rem 0.5rem; border-radius: 30px; font-size: 0.4rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .lang-indicator.html { background: var(--html-color); color: #0a0a0f; }
+        .lang-indicator.css { background: var(--css-color); color: #0a0a0f; }
+        .lang-indicator.js { background: var(--js-color); color: #0a0a0f; }
+        .lang-indicator.ts { background: var(--ts-color); color: #0a0a0f; }
+        .lang-indicator.sql { background: var(--sql-color); color: #0a0a0f; }
+        .lang-indicator.nosql { background: var(--nosql-color); color: #0a0a0f; }
+        .lang-indicator.py { background: var(--py-color); color: #fff; }
+        .lang-indicator.celebot { background: var(--celebot); color: #04302a; }
+        .preview-area { flex: 1; min-height: 140px; background: var(--bg-input); border-radius: 0 0 var(--radius) var(--radius); position: relative; overflow: hidden; }
+        .preview-area iframe { width: 100%; height: 100%; border: none; background: #fff; }
+        .preview-area .preview-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); font-size: 0.6rem; gap: 0.2rem; padding: 1rem; text-align: center; }
+        .preview-area .preview-placeholder i { font-size: 1.5rem; color: var(--text-dim); }
+        .doc-viewer { width: 100%; height: 100%; border: none; background: #fff; }
+        .py-output-container { padding: 0.5rem; height: 100%; overflow-y: auto; background: var(--bg-code); display: none; flex-direction: column; }
+        .py-output-container.show { display: flex; }
+        .py-output-header { font-size: 0.45rem; color: var(--text-muted); margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.3rem; flex-shrink: 0; }
+        .py-output-header i { color: var(--py-color); }
+        .py-output { font-family: var(--mono); font-size: 0.6rem; background: var(--bg-code); border-radius: 4px; padding: 0.5rem; white-space: pre-wrap; word-break: break-all; overflow-y: auto; flex: 1; border: 1px solid var(--border-color); min-height: 60px; color: var(--text-secondary); }
+        .py-output.error { color: #f87171; border-color: #f87171; background: rgba(248, 113, 113, 0.08); }
+        .py-output.success { color: #4ade80; border-color: #4ade80; background: rgba(74, 222, 128, 0.05); }
+        .execution-time { font-size: 0.4rem; color: var(--text-dim); margin-top: 0.2rem; text-align: right; flex-shrink: 0; }
+
+        .component-library { background: var(--bg-card); border-radius: var(--radius-sm); padding: 0.3rem 0.6rem; border: 1px solid var(--border-color); margin-top: 0.2rem; }
+        .component-library .lib-title { font-size: 0.45rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.15rem; display: flex; align-items: center; gap: 0.3rem; }
+        .component-grid { display: flex; flex-wrap: wrap; gap: 0.15rem; }
+        .component-grid .comp-btn { background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.05rem 0.35rem; border-radius: 20px; font-size: 0.35rem; cursor: pointer; font-family: var(--font); transition: var(--transition); display: flex; align-items: center; gap: 0.1rem; }
+        .component-grid .comp-btn:hover { background: var(--bg-hover); color: var(--text-primary); border-color: var(--accent); }
+        .component-grid .comp-btn i { font-size: 0.3rem; }
+        .component-grid.comp-btn-celebot { border-color: var(--celebot); }
+        .component-grid.comp-btn-celebot:hover { border-color: var(--celebot); color: var(--celebot); }
+
+        .config-modal {
+            position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center;
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px);
+        }
+        .config-modal.show { display: flex; }
+        .config-card {
+            background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius);
+            padding: 1.2rem; width: 92%; max-width: 540px; max-height: 86vh; overflow-y: auto;
+        }
+        .config-card h3 { font-size: 0.9rem; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; color: var(--celebot); }
+        .config-field { margin-bottom: 0.7rem; }
+        .config-field label { display: block; font-size: 0.55rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.4px; }
+        .config-field input, .config-field select, .config-field textarea {
+            width: 100%; background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 0.3rem 0.5rem; color: var(--text-primary); font-family: var(--font); font-size: 0.6rem; outline: none;
+        }
+        .config-field textarea { resize: vertical; min-height: 50px; }
+        .config-field input:focus, .config-field select:focus, .config-field textarea:focus { border-color: var(--celebot); }
+        .config-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .config-actions { display: flex; gap: 0.4rem; margin-top: 0.5rem; justify-content: flex-end; }
+        .config-actions button { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 0.25rem 0.9rem; border-radius: 30px; font-size: 0.55rem; cursor: pointer; font-family: var(--font); transition: var(--transition); }
+        .config-actions button.primary { background: var(--celebot); border-color: var(--celebot); color: #04302a; }
+        .config-actions button:hover { background: var(--bg-hover); }
+
+        .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 0.2rem 1rem; border-radius: 60px; font-size: clamp(0.4rem, 0.5vw, 0.5rem); z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; font-family: var(--font); white-space: nowrap; max-width: 90vw; overflow: hidden; text-overflow: ellipsis; }
+        .toast.show { opacity: 1; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 1024px) {
+            .app-layout { grid-template-columns: 1fr; padding: 0.6rem; gap: 0.6rem; }
+            .chat-panel { min-height: 280px; }
+            .chat-messages { max-height: 240px; min-height: 100px; }
+            .code-panel { min-height: 320px; }
+            .code-editor textarea { min-height: 80px; }
+            .preview-area { min-height: 100px; }
+            .api-bar { max-width: 100%; padding: 0.2rem 0.6rem; }
+            .api-bar input { min-width: 120px; font-size: 0.5rem; }
+            .hero-section h2 { font-size: 1.1rem; }
+        }
+        @media (max-width: 600px) {
+            .nav-inner { padding: 0 0.6rem; flex-direction: column; align-items: stretch; gap: 0.2rem; }
+            .nav-actions { justify-content: center; }
+            .app-layout { padding: 0.3rem; gap: 0.4rem; }
+            .chat-panel .panel-header, .code-panel .panel-header { flex-direction: column; align-items: stretch; gap: 0.2rem; }
+            .msg { font-size: 0.6rem; max-width: 96%; padding: 0.2rem 0.5rem; }
+            .input-row input { font-size: 0.5rem; padding: 0.15rem 0.4rem; }
+            .input-row button { font-size: 0.4rem; padding: 0.12rem 0.4rem; }
+            .lang-tabs button { font-size: 0.35rem; padding: 0.05rem 0.3rem; }
+            .code-panel .panel-header .actions button { font-size: 0.3rem; padding: 0.05rem 0.3rem; }
+            .api-bar { flex-direction: column; gap: 0.2rem; }
+            .api-bar input { width: 100%; min-width: unset; }
+            .hero-section h2 { font-size: 0.95rem; }
+            .hero-section p { font-size: 0.6rem; }
+            .config-row-2 { grid-template-columns: 1fr; }
+        }
+        .app-footer { padding: 0.3rem 0; border-top: 1px solid var(--border-color); text-align: center; font-size: 0.45rem; color: var(--text-muted); }
+        .app-footer .footer-inner { max-width: 1440px; margin: 0 auto; padding: 0 1.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.2rem; }
+        .app-footer .footer-inner a { color: var(--accent); text-decoration: none; }
+        .file-drop-zone { border: 2px dashed var(--border-color); border-radius: var(--radius-sm); padding: 0.3rem; text-align: center; font-size: 0.45rem; color: var(--text-dim); cursor: pointer; transition: all var(--transition); margin-top: 0.1rem; }
+        .file-drop-zone:hover { border-color: var(--accent); background: var(--bg-hover); }
+        .file-drop-zone.dragover { border-color: var(--accent); background: var(--accent-glow); }
+        .file-drop-zone input[type="file"] { display: none; }
+        .py-loading { display: none; padding: 0.05rem 0.5rem; background: var(--accent-glow); border-radius: 30px; font-size: 0.4rem; color: var(--accent); align-items: center; gap: 0.3rem; }
+        .py-loading.show { display: inline-flex; }
+    </style>
+</head>
+<body>
+    <div class="toast" id="toast"></div>
+
+    <nav class="glass-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div>
+                    <h1>WTUT</h1>
+                    <span>Full Stack Training</span>
+                </div>
+            </a>
+            <div class="nav-actions">
+                <span class="badge-status"><i class="fas fa-robot"></i> AI · 27+ models</span>
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i><span id="themeLabel">Dark</span></button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h2>Full Stack <span style="color:var(--accent);-webkit-text-fill-color:var(--accent);">Training Hub</span></h2>
+            <p>HTML · CSS · JS · TS · SQL · NoSQL · Python · Celebot AI learning assistant · Live code execution · PDF/PPT study</p>
+            <div class="api-bar">
+                <i class="fas fa-key" style="color:var(--accent);font-size:0.5rem;"></i>
+                <input type="password" id="apiKeyInput" placeholder="Enter OpenRouter BYOK key" />
+                <span class="api-status" id="apiStatus"><span class="dot green"></span> Ready</span>
+                <div class="api-actions">
+                    <button class="primary" id="testApiBtn"><i class="fas fa-check"></i> Test</button>
+                    <button id="saveApiBtn"><i class="fas fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="app-layout">
+        <section class="chat-panel" id="chatPanel">
+            <div class="panel-header">
+                <span class="title" id="chatTitle"><i class="fas fa-robot"></i> AI Assistant</span>
+                <div class="lang-tabs" id="modeTabs">
+                    <button class="active" data-mode="fullstack"><span class="dot dot-html"></span><span class="dot dot-css" style="margin-left:-2px;"></span><span class="dot dot-js" style="margin-left:-2px;"></span> Full Stack</button>
+                    <button data-mode="html"><span class="dot dot-html"></span> HTML</button>
+                    <button data-mode="css"><span class="dot dot-css"></span> CSS</button>
+                    <button data-mode="js"><span class="dot dot-js"></span> JS</button>
+                    <button data-mode="ts"><span class="dot dot-ts"></span> TS</button>
+                    <button data-mode="sql"><span class="dot dot-sql"></span> SQL</button>
+                    <button data-mode="nosql"><span class="dot dot-nosql"></span> NoSQL</button>
+                    <button data-mode="py"><span class="dot dot-py"></span> Python</button>
+                    <button data-mode="celebot" id="celebotTab"><span class="dot dot-celebot"></span> Celebot</button>
+                </div>
+            </div>
+            <div class="chat-messages" id="chatBox">
+                <div class="msg bot">
+                    <div class="label">🧠 WTUT AI</div>
+                    <span id="welcomeMsg">👋 Welcome! I can help with <strong>HTML, CSS, JavaScript, TypeScript, SQL, NoSQL, and Python</strong>. Select a language above or ask anything.</span>
+                </div>
+            </div>
+            <div class="input-row">
+                <input type="text" id="userInput" placeholder="Ask about any language or concept..." />
+                <button id="sendBtn"><i class="fas fa-paper-plane"></i> Send</button>
+            </div>
+        </section>
+
+        <section class="code-panel">
+            <div class="panel-header">
+                <span class="title"><i class="fas fa-code"></i> Code Editor</span>
+                <div class="actions">
+                    <span class="lang-indicator html" id="langIndicator">HTML</span>
+                    <span class="py-loading" id="pyLoading"><i class="fas fa-spinner fa-spin"></i> Loading Python...</span>
+                    <button id="runBtn" class="primary"><i class="fas fa-play"></i> Run</button>
+                    <button id="exportBtn"><i class="fas fa-download"></i> Export</button>
+                    <button id="readBtn"><i class="fas fa-file-import"></i> Read</button>
+                    <button id="formatBtn"><i class="fas fa-magic"></i> Format</button>
+                    <button id="clearBtn"><i class="fas fa-trash-alt"></i> Clear</button>
+                    <button id="configBtn" title="Celebot configuration"><i class="fas fa-cog"></i> Config</button>
+                </div>
+            </div>
+            <div class="code-editor">
+                <textarea id="codeTextarea" spellcheck="false"></textarea>
+            </div>
+            <div class="preview-area" id="previewArea">
+                <div class="preview-placeholder" id="previewPlaceholder">
+                    <i class="fas fa-play-circle"></i>
+                    <p>Run your code to see the result</p>
+                    <p style="font-size:0.45rem;color:var(--text-dim);">Click "Run" or press Ctrl+Enter</p>
+                </div>
+                <iframe id="previewIframe" style="display:none;"></iframe>
+                <iframe class="doc-viewer" id="docViewer" style="display:none;"></iframe>
+                <div class="py-output-container" id="pyOutputContainer">
+                    <div class="py-output-header"><i class="fab fa-python"></i><span>Python Output</span></div>
+                    <div class="py-output" id="pyOutput"></div>
+                    <div class="execution-time" id="pyExecutionTime"></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div style="max-width:1440px;margin:0 auto;padding:0 1.5rem 0.3rem;">
+        <div class="component-library">
+            <div class="lib-title"><i class="fas fa-cubes"></i> UI Components · Click to insert</div>
+            <div class="component-grid">
+                <button class="comp-btn" data-template="button"><i class="fas fa-square"></i> Button</button>
+                <button class="comp-btn" data-template="card"><i class="fas fa-credit-card"></i> Card</button>
+                <button class="comp-btn" data-template="form"><i class="fas fa-form"></i> Form</button>
+                <button class="comp-btn" data-template="navbar"><i class="fas fa-bars"></i> Navbar</button>
+                <button class="comp-btn" data-template="grid"><i class="fas fa-th"></i> Grid</button>
+                <button class="comp-btn" data-template="modal"><i class="fas fa-window-maximize"></i> Modal</button>
+                <button class="comp-btn" data-template="table"><i class="fas fa-table"></i> Table</button>
+                <button class="comp-btn" data-template="chart"><i class="fas fa-chart-bar"></i> Chart</button>
+            </div>
+            <div class="lib-title" style="margin-top:0.3rem;color:var(--celebot);"><i class="fas fa-graduation-cap"></i> Celebot Skills · PDF/PPT Creator & Doubt Clarifier</div>
+            <div class="component-grid">
+                <button class="comp-btn comp-btn-celebot" id="skillPdf"><i class="fas fa-file-pdf"></i> Create PDF</button>
+                <button class="comp-btn comp-btn-celebot" id="skillPpt"><i class="fas fa-file-powerpoint"></i> Create PPT</button>
+                <button class="comp-btn comp-btn-celebot" id="skillReadPdf"><i class="fas fa-file-import"></i> Explain PDF</button>
+                <button class="comp-btn comp-btn-celebot" id="skillReadPpt"><i class="fas fa-file-import"></i> Explain PPTX</button>
+                <button class="comp-btn comp-btn-celebot" id="skillDoubt"><i class="fas fa-question-circle"></i> Clarify Doubt</button>
+                <button class="comp-btn comp-btn-celebot" id="skillSummarize"><i class="fas fa-list-alt"></i> Summarize Unit</button>
+            </div>
+            <div class="file-drop-zone" id="fileDropZone">
+                <i class="fas fa-cloud-upload-alt"></i> Drop a .html, .css, .js, .ts, .sql, .py, .pdf, .pptx file here or click to browse
+                <input type="file" id="fileInput" accept=".html,.htm,.css,.js,.ts,.sql,.txt,.py,.pdf,.pptx,.ppt" />
+                <input type="file" id="celebotFileInput" accept=".pdf,.pptx,.ppt" style="display:none;" />
+            </div>
+        </div>
+    </div>
+
+    <div class="config-modal" id="configModal">
+        <div class="config-card">
+            <h3><i class="fas fa-graduation-cap"></i> Celebot Configuration</h3>
+            <div class="config-row-2">
+                <div class="config-field">
+                    <label>Active Bot</label>
+                    <select id="cfgBot">
+                        <option value="celebot">Celebot (Learning)</option>
+                        <option value="assistant">AI Assistant</option>
+                    </select>
+                </div>
+                <div class="config-field">
+                    <label>Model</label>
+                    <select id="cfgModel"></select>
+                </div>
+            </div>
+            <div class="config-field">
+                <label>Persona / Role</label>
+                <textarea id="cfgPersona">You are Celebot, a friendly teaching and learning assistant. You reduce the learner's study burden by explaining concepts simply and clearly, grounding answers in the app's learning data, glossary, and any uploaded study material (PDF/PPTX).</textarea>
+            </div>
+            <div class="config-field">
+                <label>Thinking Enabled</label>
+                <select id="cfgThinking">
+                    <option value="on">On (show reasoning scratchpad)</option>
+                    <option value="off">Off</option>
+                </select>
+            </div>
+            <div class="config-row-2">
+                <div class="config-field"><label>Max Tokens</label><input id="cfgTokens" type="number" value="1000" /></div>
+                <div class="config-field"><label>Temperature</label><input id="cfgTemp" type="number" step="0.1" min="0" max="1.5" value="0.5" /></div>
+            </div>
+            <div class="config-actions">
+                <button id="cfgClose">Close</button>
+                <button class="primary" id="cfgSave">Save & Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <div class="footer-inner">
+            <span><i class="fas fa-brain"></i> Powered by OpenRouter · BYOK free models</span>
+            <span><i class="fas fa-graduation-cap"></i> Celebot Learning Assistant</span>
+            <span><i class="fas fa-keyboard"></i> Ctrl+Enter to run</span>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+
+            // ══════════════════════ CELFBOT CONFIG (easily configurable) ══════════════════════
+            var DEFAULT_KEY = '';
+            var OPENROUTER_KEY = localStorage.getItem('wtut_api_key') || DEFAULT_KEY;
+            var AVAILABLE_MODELS = [
+                'google/gemini-2.0-flash-001',
+                'google/gemini-2.0-pro-001',
+                'anthropic/claude-3-haiku',
+                'meta-llama/llama-3.1-8b-instruct',
+                'mistralai/mistral-7b-instruct',
+                'microsoft/phi-3-mini-128k-instruct'
+            ];
+            // KB of the M.Tech site (encrypted in localStorage). Plain fallback for offline use.
+            var KB_META = {
+                version: 1,
+                subjects: 25,
+                units: 125,
+                topics: 625,
+                built: '2026-09-04'
+            };
+            var GLOSSARY_TERMS = ['Algorithm', 'ADT', 'AVL Tree', 'Big Data', 'Cloud Computing', 'Convolutional Neural Network', 'Data Mining', 'Decision Tree', 'Hadoop', 'Machine Learning', 'MapReduce', 'NoSQL', 'Normalization', 'Overfitting', 'PageRank', 'RDBMS', 'Spark', 'SVM', 'Virtualization', 'Watermarking', 'WSN']
+                .map(function (t) { return { term: t }; });
+
+            // ══════════════════════ DOM REFS ══════════════════════
+            var chatBox = document.getElementById('chatBox');
+            var userInput = document.getElementById('userInput');
+            var sendBtn = document.getElementById('sendBtn');
+            var welcomeMsg = document.getElementById('welcomeMsg');
+            var chatPanel = document.getElementById('chatPanel');
+            var chatTitle = document.getElementById('chatTitle');
+            var codeTextarea = document.getElementById('codeTextarea');
+            var previewArea = document.getElementById('previewArea');
+            var previewPlaceholder = document.getElementById('previewPlaceholder');
+            var previewIframe = document.getElementById('previewIframe');
+            var docViewer = document.getElementById('docViewer');
+            var pyOutputContainer = document.getElementById('pyOutputContainer');
+            var pyOutput = document.getElementById('pyOutput');
+            var pyExecutionTime = document.getElementById('pyExecutionTime');
+            var pyLoading = document.getElementById('pyLoading');
+            var toastEl = document.getElementById('toast');
+            var langIndicator = document.getElementById('langIndicator');
+            var runBtn = document.getElementById('runBtn');
+            var exportBtn = document.getElementById('exportBtn');
+            var readBtn = document.getElementById('readBtn');
+            var formatBtn = document.getElementById('formatBtn');
+            var clearBtn = document.getElementById('clearBtn');
+            var configBtn = document.getElementById('configBtn');
+            var apiKeyInput = document.getElementById('apiKeyInput');
+            var testApiBtn = document.getElementById('testApiBtn');
+            var saveApiBtn = document.getElementById('saveApiBtn');
+            var apiStatus = document.getElementById('apiStatus');
+            var fileDropZone = document.getElementById('fileDropZone');
+            var fileInput = document.getElementById('fileInput');
+            var celebotFileInput = document.getElementById('celebotFileInput');
+
+            var currentMode = 'fullstack';
+            var chatHistory = [];
+            var modelIndex = 0;
+            var pyodideReady = false;
+            var pyodideInstance = null;
+            var isPyodideLoading = false;
+            var KB_ENCRYPTED = null;
+            var activeBot = 'celebot';
+
+            // ══════════════════════ CELEBOT STATE ══════════════════════
+            var celebotConfig = {
+                model: AVAILABLE_MODELS[0],
+                persona: 'You are Celebot, a friendly teaching and learning assistant. You reduce the learner\'s study burden by explaining concepts simply and clearly, grounding answers in the app\'s learning data, glossary, and any uploaded study material (PDF/PPTX).',
+                thinking: 'on',
+                tokens: 1000,
+                temperature: 0.5
+            };
+            var uploadedDocs = [];
+
+            // Load saved celebot config
+            try {
+                var savedCfg = localStorage.getItem('celebot_config');
+                if (savedCfg) Object.assign(celebotConfig, JSON.parse(savedCfg));
+            } catch (e) { }
+
+            // ══════════════════════ CONFIGURATION UI ══════════════════════
+            (function populateModels() {
+                var sel = document.getElementById('cfgModel');
+                sel.innerHTML = '';
+                AVAILABLE_MODELS.forEach(function (m) {
+                    var o = document.createElement('option');
+                    o.value = m;
+                    o.textContent = m;
+                    if (m === celebotConfig.model) o.selected = true;
+                    sel.appendChild(o);
+                });
+            })();
+            document.getElementById('cfgModel').addEventListener('change', function () { celebotConfig.model = this.value; });
+            document.getElementById('cfgPersona').value = celebotConfig.persona;
+            document.getElementById('cfgThinking').value = celebotConfig.thinking;
+            document.getElementById('cfgTokens').value = celebotConfig.tokens;
+            document.getElementById('cfgTemp').value = celebotConfig.temperature;
+            document.getElementById('cfgBot').addEventListener('change', function () {
+                activeBot = this.value;
+                var isCelebot = activeBot === 'celebot';
+                chatPanel.classList.toggle('celebot', isCelebot);
+                chatTitle.innerHTML = isCelebot
+                    ? '<i class="fas fa-graduation-cap" style="color:var(--celebot)"></i> Celebot · Learning Assistant'
+                    : '<i class="fas fa-robot"></i> AI Assistant';
+                if (isCelebot) {
+                    langIndicator.className = 'lang-indicator celebot';
+                    langIndicator.textContent = 'Celebot';
+                }
+            });
+            document.getElementById('cfgOpen') && null;
+            configBtn.addEventListener('click', function () { document.getElementById('configModal').classList.add('show'); });
+            document.getElementById('cfgClose').addEventListener('click', function () { document.getElementById('configModal').classList.remove('show'); });
+            document.getElementById('configModal').addEventListener('click', function (e) { if (e.target === this) this.classList.remove('show'); });
+            document.getElementById('cfgSave').addEventListener('click', function () {
+                celebotConfig.persona = document.getElementById('cfgPersona').value;
+                celebotConfig.thinking = document.getElementById('cfgThinking').value;
+                celebotConfig.tokens = parseInt(document.getElementById('cfgTokens').value, 10) || 1000;
+                celebotConfig.temperature = parseFloat(document.getElementById('cfgTemp').value) || 0.5;
+                celebotConfig.model = document.getElementById('cfgModel').value;
+                localStorage.setItem('celebot_config', JSON.stringify(celebotConfig));
+                document.getElementById('configModal').classList.remove('show');
+                showToast('⚙️ Celebot config saved & applied', 2000);
+            });
+
+            // ══════════════════════ TOAST ══════════════════════
+            var toastTimeout;
+            function showToast(msg, dur) { dur = dur || 2500; toastEl.textContent = msg; toastEl.classList.add('show'); clearTimeout(toastTimeout); toastTimeout = setTimeout(function () { toastEl.classList.remove('show'); }, dur); }
+
+            // ══════════════════════ THEME ══════════════════════
+            var currentTheme = 'dark';
+            function applyTheme(theme) {
+                currentTheme = theme;
+                document.documentElement.setAttribute('data-theme', theme);
+                var icon = document.getElementById('themeIcon'), label = document.getElementById('themeLabel');
+                if (theme === 'dark') { icon.className = 'fas fa-moon'; label.textContent = 'Dark'; }
+                else { icon.className = 'fas fa-sun'; label.textContent = 'Light'; }
+            }
+            applyTheme('dark');
+            document.getElementById('themeToggle').addEventListener('click', function () { applyTheme(currentTheme === 'dark' ? 'light' : 'dark'); });
+
+            // ══════════════════════ API KEY ══════════════════════
+            function updateApiStatus(status) {
+                var dot = apiStatus.querySelector('.dot');
+                dot.className = 'dot';
+                if (status === 'ready') { dot.classList.add('green'); apiStatus.innerHTML = '<span class="dot green"></span> Ready'; }
+                else if (status === 'testing') { dot.classList.add('yellow'); apiStatus.innerHTML = '<span class="dot yellow"></span> Testing...'; }
+                else if (status === 'error') { dot.classList.add('red'); apiStatus.innerHTML = '<span class="dot red"></span> Error'; }
+                else if (status === 'success') { dot.classList.add('green'); apiStatus.innerHTML = '<span class="dot green"></span> Valid'; }
+            }
+            async function testApiKey(key) {
+                if (!key || key.length < 10) { updateApiStatus('error'); showToast('⚠️ Please enter a valid BYOK API key', 2000); return false; }
+                updateApiStatus('testing');
+                try {
+                    var response = await fetch('https://openrouter.ai/api/v1/models', {
+                        headers: { 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json', 'HTTP-Referer': window.location.origin, 'X-Title': 'WTUT Celebot' }
+                    });
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    var data = await response.json();
+                    var models = data.data || [];
+                    var free = models.filter(function (m) {
+                        var p = m.pricing ? parseFloat(m.pricing.prompt) || 0 : 1;
+                        var c = m.pricing ? parseFloat(m.pricing.completion) || 0 : 1;
+                        return p === 0 && c === 0;
+                    });
+                    updateApiStatus('success');
+                    showToast('✅ BYOK valid! ' + free.length + ' free models available', 2500);
+                    return true;
+                } catch (err) { updateApiStatus('error'); showToast('❌ API test failed: ' + err.message, 3000); return false; }
+            }
+            apiKeyInput.value = OPENROUTER_KEY || '';
+            if (OPENROUTER_KEY) setTimeout(function () { testApiKey(OPENROUTER_KEY); }, 500);
+            testApiBtn.addEventListener('click', async function () { var k = apiKeyInput.value.trim(); if (!k) return; await testApiKey(k); });
+            saveApiBtn.addEventListener('click', async function () {
+                var k = apiKeyInput.value.trim();
+                if (!k) { showToast('⚠️ Enter an API key', 2000); return; }
+                var valid = await testApiKey(k);
+                if (valid) { localStorage.setItem('wtut_api_key', k); OPENROUTER_KEY = k; showToast('✅ BYOK key saved!', 2000); }
+            });
+
+            // ══════════════════════ ENCRYPTED KNOWLEDGEBASE ══════════════════════
+            async function getCryptoKey() {
+                var stored = localStorage.getItem('celebot_kb_key');
+                var raw = stored ? Uint8Array.from(atob(stored), function (c) { return c.charCodeAt(0); }) : crypto.getRandomValues(new Uint8Array(32));
+                if (!stored) localStorage.setItem('celebot_kb_key', btoa(String.fromCharCode.apply(null, raw)));
+                return crypto.subtle.importKey('raw', raw, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+            }
+            async function encryptKB(plain) {
+                var key = await getCryptoKey();
+                var iv = crypto.getRandomValues(new Uint8Array(12));
+                var enc = await crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, key, new TextEncoder().encode(plain));
+                return btoa(String.fromCharCode.apply(null, iv)) + ':' + btoa(String.fromCharCode.apply(null, new Uint8Array(enc)));
+            }
+            async function decryptKB(payload) {
+                try {
+                    var parts = payload.split(':');
+                    var iv = Uint8Array.from(atob(parts[0]), function (c) { return c.charCodeAt(0); });
+                    var data = Uint8Array.from(atob(parts[1]), function (c) { return c.charCodeAt(0); });
+                    var key = await getCryptoKey();
+                    var dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, data);
+                    return new TextDecoder().decode(dec);
+                } catch (e) { throw new Error('Decrypt failed (key changed?)'); }
+            }
+            async function buildKnowledgeBase() {
+                var plain = JSON.stringify({
+                    meta: KB_META,
+                    glossary: GLOSSARY_TERMS,
+                    subjects: [
+                        { id: 'mcs', name: 'Mathematical Foundations of Computer Science', units: ['Probability', 'Sampling & Estimation', 'Hypothesis Testing', 'Algebraic Structures', 'Graph Theory'] },
+                        { id: 'dsa', name: 'Advanced Data Structures & Algorithms', units: ['Complexity & Heaps', 'Advanced Trees', 'Graph Algorithms', 'Hashing', 'String Algorithms'] },
+                        { id: 'bda', name: 'Big Data Analytics', units: ['Big Data Fundamentals', 'Hadoop HDFS', 'MapReduce', 'Spark', 'Streaming'] },
+                        { id: 'dip', name: 'Digital Image Processing', units: ['Digital Image Fundamentals', 'Image Transforms', 'Enhancement', 'Segmentation', 'Compression'] },
+                        { id: 'aos', name: 'Advanced Operating Systems', units: ['OS Structures', 'Process & Threads', 'Concurrency', 'Distributed OS', 'Real-Time OS'] },
+                        { id: 'acn', name: 'Advanced Computer Networks', units: ['Network Models', 'TCP/IP', 'Routing', 'QoS', 'Network Security'] },
+                        { id: 'iot', name: 'Internet of Things', units: ['IoT Overview', 'Sensors & Actuators', 'IoT Protocols', 'Data Management', 'IoT Applications'] },
+                        { id: 'oose', name: 'Object Oriented Software Engineering', units: ['OO Concepts', 'Requirements', 'Design', 'UML', 'Testing'] },
+                        { id: 'ml', name: 'Machine Learning', units: ['Introduction & Regression', 'Classification', 'Neural Networks', 'Ensembles', 'Evaluation'] },
+                        { id: 'cc', name: 'Cloud Computing', units: ['Cloud Fundamentals', 'Virtualization', 'Cloud Architecture', 'PaaS/IaaS/SaaS', 'Security'] },
+                        { id: 'sc', name: 'Soft Computing', units: ['Neural Networks', 'Fuzzy Logic', 'Genetic Algorithms', 'Hybrid Systems', 'Applications'] },
+                        { id: 'dl', name: 'Deep Learning', units: ['ANN Basics', 'CNN', 'RNN', 'Autoencoders', 'GANs'] }
+                    ]
+                });
+                // Store encrypted; keep plain in memory for offline grounding too.
+                try {
+                    KB_ENCRYPTED = await encryptKB(plain);
+                    localStorage.setItem('celebot_kb', KB_ENCRYPTED);
+                } catch (e) { console.warn('Encryption unavailable; KB stays in memory.', e); }
+                window.__CELEBOT_KB__ = JSON.parse(plain);
+                return plain;
+            }
+
+            // ══════════════════════ PDF / PPTX READING ══════════════════════
+            function setupPdfJs() {
+                if (window.pdfjsLib) {
+                    try { window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; } catch (e) { }
+                    return true;
+                }
+                return false;
+            }
+            async function extractPdf(file) {
+                if (!window.pdfjsLib) { setupPdfJs(); if (!window.pdfjsLib) throw new Error('pdf.js not loaded (needs internet)'); }
+                var buf = await file.arrayBuffer();
+                var pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+                var text = '';
+                var maxPages = Math.min(pdf.numPages, 40);
+                for (var p = 1; p <= maxPages; p++) {
+                    var page = await pdf.getPage(p);
+                    var content = await page.getTextContent();
+                    content.items.forEach(function (it) { if (it.str) text += it.str + ' '; });
+                    text += '\n--- page ' + p + ' ---\n';
+                }
+                return text;
+            }
+            async function extractPptx(file) {
+                var text = '';
+                try {
+                    var textContent = await file.text();
+                    var lines = textContent.split('\n');
+                    var inSlide = false;
+                    lines.forEach(function (l) {
+                        var t = l.trim();
+                        if (/<p ?:>|<a:t>/.test(t)) { text += t.replace(/<[^>]+>/g, '') + ' '; }
+                        else if (t.indexOf('<p:') === 0 || t.indexOf('<a:t') === 0) { text += t.replace(/<[^>]+>/g, '') + '\n'; }
+                    });
+                } catch (e) {
+                    // Fallback: try JSZip-free XML-ish approaches are not possible; report what we have
+                    text = (text || '') || 'Could not parse PPTX (ensure a modern browser and internet for pptxjs).';
+                }
+                return text || 'No readable text found in PPTX.';
+            }
+            async function handleCelebotFile(file) {
+                var ext = file.name.split('.').pop().toLowerCase();
+                var content = '';
+                try {
+                    if (ext === 'pdf') content = await extractPdf(file);
+                    else if (ext === 'pptx' || ext === 'ppt') content = await extractPptx(file);
+                    else throw new Error('Unsupported file type');
+                } catch (e) { showToast('❌ ' + e.message, 3500); return; }
+                uploadedDocs.push({ name: file.name, content: content.slice(0, 20000) });
+                appendMessage('bot', markdown('📄 <b>Read "' + file.name + '"</b> — ' + content.length + ' chars extracted. Ask Celebot to explain or summarize it.'));
+                showToast('📄 Analysed ' + file.name, 2000);
+            }
+
+            // ══════════════════════ OPENROUTER CHAT ══════════════════════
+            function markdown(txt) { return txt.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'); }
+            function appendMessage(role, content) {
+                var div = document.createElement('div');
+                div.className = 'msg ' + role;
+                if (role === 'bot') {
+                    var label = document.createElement('div'); label.className = 'label';
+                    label.textContent = activeBot === 'celebot' ? '🎓 Celebot' : '🧠 WTUT AI';
+                    div.appendChild(label);
+                    var span = document.createElement('span'); span.innerHTML = content; div.appendChild(span);
+                } else { div.textContent = content; }
+                chatBox.appendChild(div);
+                chatBox.scrollTop = chatBox.scrollHeight;
+                chatHistory.push({ role: role === 'user' ? 'user' : 'assistant', content: stripHtml(content) });
+                if (chatHistory.length > 50) chatHistory.splice(0, 10);
+            }
+            function stripHtml(h) {
+                var tmp = document.createElement('div'); tmp.innerHTML = h; return tmp.textContent || tmp.innerText || '';
+            }
+
+            function kbContext() {
+                var kb = window.__CELEBOT_KB__;
+                var s = '';
+                if (kb && kb.subjects) {
+                    kb.subjects.forEach(function (sub) {
+                        s += '- ' + sub.name + ': Units: ' + sub.units.join(', ') + '\n';
+                    });
+                }
+                if (kb && kb.glossary) {
+                    s += 'Glossary: ' + kb.glossary.map(function (g) { return g.term; }).join(', ') + '\n';
+                }
+                if (uploadedDocs.length) {
+                    s += '\nUPLOADED STUDY DOCUMENTS:\n';
+                    uploadedDocs.forEach(function (d) { s += '### ' + d.name + ':\n' + d.content.slice(0, 6000) + '\n'; });
+                }
+                return s;
+            }
+
+            function thinkingBlock(text) {
+                return '<div class="think-box"><div class="think-toggle"><i class="fas fa-brain"></i> Celebot thinking <i class="fas fa-chevron-down"></i></div><div class="think-body">' + markdown(text) + '</div></div>';
+            }
+            document.addEventListener('click', function (e) {
+                if (e.target.closest && e.target.closest('.think-toggle')) {
+                    e.target.closest('.think-box').classList.toggle('open');
+                }
+            });
+
+            async function askCelebot(userMessage) {
+                if (!OPENROUTER_KEY) { appendMessage('bot', '⚠️ Please enter and save your OpenRouter BYOK key in the bar above.'); showToast('⚠️ BYOK key required', 3000); return; }
+
+                var wantsThinking = celebotConfig.thinking === 'on';
+                var kb = kbContext();
+                var thinkingNote = wantsThinking ? '\nFirst, show your internal reasoning in a "thinking" step, then give the final learner-friendly answer.' : '';
+                var systemPrompt = celebotConfig.persona + '\n\nUse this knowledgebase of the learning website (subjects, units, glossary) and any uploaded study documents to ground your teaching:\n' + kb + thinkingNote;
+
+                var model = celebotConfig.model;
+                try {
+                    var payload = {
+                        model: model,
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            ...chatHistory.slice(-10),
+                            { role: 'user', content: userMessage }
+                        ],
+                        temperature: celebotConfig.temperature,
+                        max_tokens: celebotConfig.tokens
+                    };
+                    if (wantsThinking) payload.reasoning = { effort: 'low' };
+                    var response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + OPENROUTER_KEY, 'HTTP-Referer': window.location.origin, 'X-Title': 'WTUT Celebot' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) {
+                        var err = await response.json().catch(function () { return {}; });
+                        throw new Error((err.error && err.error.message) || 'HTTP ' + response.status);
+                    }
+                    var data = await response.json();
+                    var reply = data.choices && data.choices[0] && data.choices[0].message ? data.choices[0].message.content : 'I had a thought, but it slipped away.';
+
+                    // Extract thinking from reasoning content if present
+                    var reasoning = (data.choices[0].message.reasoning) || '';
+                    var html = '';
+                    if (wantsThinking && reasoning) html += thinkingBlock(reasoning);
+                    // Simple thinking simulation fallback (split on first noticeable colon)
+                    if (wantsThinking && !reasoning && reply.length > 140) {
+                        var est = 'Gathering the relevant unit concepts, checking the glossary and uploaded material, then structuring a clear, concise answer.';
+                        html += thinkingBlock(est);
+                    }
+                    html += markdown(reply);
+                    appendMessage('bot', html);
+
+                    // Extract code block to editor
+                    var codeMatch = reply.match(/```(html|css|javascript|typescript|sql|json|python)?\n([\s\S]*?)```/);
+                    if (codeMatch && codeMatch[2] && codeMatch[2].length > 15) { codeTextarea.value = codeMatch[2].trim(); showToast('📝 Code extracted to editor', 1500); }
+                    return reply;
+                } catch (err) { appendMessage('bot', '⚠️ Error: ' + err.message); showToast('❌ ' + err.message, 4000); return null; }
+            }
+
+            async function handleSend() {
+                var msg = userInput.value.trim();
+                if (!msg) { showToast('⚠️ Enter a message', 2000); userInput.focus(); return; }
+                appendMessage('user', msg);
+                userInput.value = '';
+                sendBtn.disabled = true;
+                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                try {
+                    if (activeBot === 'celebot') await askCelebot(msg);
+                    else await askAI_legacy(msg);
+                } catch (e) { console.error(e); }
+                finally { sendBtn.disabled = false; sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send'; userInput.focus(); }
+            }
+
+            // Legacy AI Assistant (mode-based) — kept for compatibility of the mode tabs.
+            async function askAI_legacy(userMessage) {
+                if (!OPENROUTER_KEY) { appendMessage('bot', '⚠️ Please enter and save your OpenRouter BYOK key.'); showToast('⚠️ BYOK key required', 3000); return; }
+                var modePrompts = {
+                    fullstack: 'You are a Full Stack Development instructor.',
+                    html: 'You are an HTML expert.', css: 'You are a CSS expert.', js: 'You are a JavaScript expert.',
+                    ts: 'You are a TypeScript expert.', sql: 'You are an SQL Database expert.', nosql: 'You are a NoSQL expert.', py: 'You are a Python expert.'
+                };
+                var systemPrompt = modePrompts[currentMode] || modePrompts.fullstack;
+                var model = AVAILABLE_MODELS[modelIndex % AVAILABLE_MODELS.length]; modelIndex++;
+                try {
+                    var response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + OPENROUTER_KEY, 'HTTP-Referer': window.location.origin, 'X-Title': 'WTUT' },
+                        body: JSON.stringify({ model: model, messages: [{ role: 'system', content: systemPrompt }].concat(chatHistory.slice(-10)).concat([{ role: 'user', content: userMessage }]), temperature: 0.6, max_tokens: 800 })
+                    });
+                    if (!response.ok) { var err = await response.json().catch(function () { return {}; }); throw new Error((err.error && err.error.message) || 'HTTP ' + response.status); }
+                    var data = await response.json();
+                    var reply = data.choices[0].message.content || '...';
+                    appendMessage('bot', markdown(reply));
+                    var codeMatch = reply.match(/```(html|css|javascript|typescript|sql|json|python)?\n([\s\S]*?)```/);
+                    if (codeMatch && codeMatch[2] && codeMatch[2].length > 15) { codeTextarea.value = codeMatch[2].trim(); showToast('📝 Code extracted to editor', 1500); }
+                    return reply;
+                } catch (err) { appendMessage('bot', '⚠️ Error: ' + err.message); showToast('❌ ' + err.message, 4000); return null; }
+            }
+
+            sendBtn.addEventListener('click', handleSend);
+            userInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); handleSend(); } });
+
+            // ══════════════════════ MODE TABS ══════════════════════
+            var MODE_META = {
+                fullstack: ['Full Stack', 'html', 'Full Stack Development - ask about APIs, databases, and integration!'],
+                html: ['HTML', 'html', 'HTML - ask about structure, semantics, and accessibility!'],
+                css: ['CSS', 'css', 'CSS - ask about layout, animations, and responsive design!'],
+                js: ['JavaScript', 'js', 'JavaScript - ask about functions, DOM, and async programming!'],
+                ts: ['TypeScript', 'ts', 'TypeScript - ask about types, interfaces, and type safety!'],
+                sql: ['SQL', 'sql', 'SQL - ask about queries, joins, and database design!'],
+                nosql: ['NoSQL', 'nosql', 'NoSQL - ask about document stores, aggregation, and indexing!'],
+                py: ['Python', 'py', 'Python - ask about syntax, functions, OOP, data structures, and libraries!'],
+                celebot: ['Celebot', 'celebot', '🎓 Celebot - your teaching & learning assistant! Ask to explain any M.Tech topic, clarify a doubt, or upload a PDF/PPTX study file.']
+            };
+            document.querySelectorAll('#modeTabs button').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('#modeTabs button').forEach(function (b) { b.classList.remove('active'); });
+                    this.classList.add('active');
+                    currentMode = this.dataset.mode;
+                    var meta = MODE_META[currentMode] || MODE_META.fullstack;
+                    if (currentMode === 'celebot') {
+                        activeBot = 'celebot';
+                        chatPanel.classList.add('celebot');
+                        chatTitle.innerHTML = '<i class="fas fa-graduation-cap" style="color:var(--celebot)"></i> Celebot · Learning Assistant';
+                        langIndicator.className = 'lang-indicator celebot'; langIndicator.textContent = 'Celebot';
+                    } else {
+                        if (activeBot === 'celebot') { activeBot = 'assistant'; chatPanel.classList.remove('celebot'); chatTitle.innerHTML = '<i class="fas fa-robot"></i> AI Assistant'; }
+                        langIndicator.className = 'lang-indicator ' + meta[1]; langIndicator.textContent = meta[0];
+                    }
+                    welcomeMsg.textContent = meta[2];
+                    chatHistory = [];
+                    var msgs = chatBox.querySelectorAll('.msg');
+                    for (var i = 1; i < msgs.length; i++) msgs[i].remove();
+                    var first = chatBox.querySelector('.msg');
+                    if (first) { var ans = first.querySelector('span'); if (ans) ans.innerHTML = '👋 ' + meta[2]; }
+                });
+            });
+
+            // ══════════════════════ CELEBOT SKILLS ══════════════════════
+            function skillCreatePdf() {
+                var content = codeTextarea.value || TEXT_PDF_TEMPLATE;
+                var html =
+                    '<html><head><meta charset="utf-8"><style>body{font-family:Inter,system-ui,sans-serif;padding:2rem;}h1{color:#1a1a2e;}p{color:#333;line-height:1.6;}</style></head><body>' +
+                    '<h1>Celebot Study Notes</h1>' + '<p>Generated by Celebot — duplicate this content and print to PDF.</p><hr>' +
+                    content.split('\n').map(function (l) { return '<p>' + l + '</p>'; }).join('') +
+                    '
+  <!-- ═══════ CELEBOT AI ASSISTANT WIDGET ═══════ -->
+  <button class="celebot-fab" id="celebotFab" title="Ask Celebot AI">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div class="celebot-widget" id="celebotWidget">
+    <div class="cw-header">
+      <div class="cw-header-left">
+        <i class="fas fa-graduation-cap cw-icon"></i>
+        <div>
+          <div class="cw-title">Celebot</div>
+          <div class="cw-subtitle">AI Learning Assistant</div>
+        </div>
+      </div>
+      <div class="cw-header-actions">
+        <button class="cw-btn-icon" id="cwConfigBtn" title="Configure Celebot"><i class="fas fa-cog"></i></button>
+        <button class="cw-btn-icon" id="cwMinimizeBtn" title="Minimize"><i class="fas fa-minus"></i></button>
+      </div>
+    </div>
+
+    <div class="cw-api-bar">
+      <input type="password" id="cwApiKey" placeholder="OpenRouter BYOK key" />
+      <button class="cw-api-save" id="cwApiSave"><i class="fas fa-save"></i></button>
+      <span class="cw-api-status" id="cwApiStatus"></span>
+    </div>
+
+    <div class="cw-messages" id="cwChatBox">
+      <div class="cw-msg cw-bot">
+        <div class="cw-msg-label"><i class="fas fa-graduation-cap"></i> Celebot</div>
+        <div class="cw-msg-body">Hi! I can help you with any M.Tech topic. Ask me to explain a concept, clarify a doubt, or summarize a unit.</div>
+      </div>
+    </div>
+
+    <div class="cw-skills">
+      <button class="cw-skill" data-skill="doubt"><i class="fas fa-question-circle"></i> Clarify Doubt</button>
+      <button class="cw-skill" data-skill="summarize"><i class="fas fa-list-alt"></i> Summarize</button>
+      <button class="cw-skill" data-skill="explain"><i class="fas fa-lightbulb"></i> Explain Topic</button>
+      <button class="cw-skill" data-skill="quiz"><i class="fas fa-puzzle-piece"></i> Quiz Me</button>
+    </div>
+
+    <div class="cw-input-row">
+      <input type="text" id="cwUserInput" placeholder="Ask anything about your subjects..." />
+      <button class="cw-send" id="cwSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <!-- Celebot Config Modal -->
+  <div class="cw-config-modal" id="cwConfigModal">
+    <div class="cw-config-card">
+      <h3><i class="fas fa-graduation-cap"></i> Celebot Configuration</h3>
+      <div class="cw-cfg-field">
+        <label>Model</label>
+        <select id="cwCfgModel"></select>
+      </div>
+      <div class="cw-cfg-field">
+        <label>Persona</label>
+        <textarea id="cwCfgPersona" rows="3">You are Celebot, a friendly M.Tech CSE teaching assistant. Explain concepts simply, use examples, and ground answers in the JNTU Kakinada syllabus.</textarea>
+      </div>
+      <div class="cw-cfg-row">
+        <div class="cw-cfg-field"><label>Max Tokens</label><input id="cwCfgTokens" type="number" value="1000" /></div>
+        <div class="cw-cfg-field"><label>Temperature</label><input id="cwCfgTemp" type="number" step="0.1" min="0" max="1.5" value="0.5" /></div>
+      </div>
+      <div class="cw-cfg-actions">
+        <button id="cwCfgClose">Close</button>
+        <button class="cw-cfg-save" id="cwCfgSave">Save</button>
+      </div>
+    </div>
+  </div>
+</body></html>';
+                var w = window.open('', '_blank');
+                if (w) { w.document.write(html); w.document.close(); w.focus(); w.print(); showToast('🖨️ Use Save as PDF in the print dialog', 3000); }
+                else showToast('⚠️ Pop-up blocked — allow popups for PDF export', 3000);
+            }
+            function skillCreatePpt() {
+                var content = codeTextarea.value || TEXT_PPT_TEMPLATE;
+                var lines = content.split('\n').filter(function (l) { return l.trim(); });
+                var html = '<html><head><meta charset="utf-8"><style>@page{size:16in 9in;margin:0}*{box-sizing:border-box}.slide{width:16in;height:9in;page-break-after:always;display:flex;flex-direction:column;justify-content:center;padding:3in;background:#08080f;color:#fff;font-family:Inter,system-ui,sans-serif} .t{font-size:2.6in;font-weight:800;margin-bottom:1in} .b{font-size:1.4in;line-height:1.5;color:#ddd}</style></head><body>';
+                var title = lines[0] || 'Celebot Lecture';
+                html += '<div class="slide"><div class="t">' + title + '</div></div>';
+                lines.slice(1).forEach(function (l) { html += '<div class="slide"><div class="b">' + l + '</div></div>'; });
+                html += '</body></html>';
+                var w = window.open('', '_blank');
+                if (w) { w.document.write(html); w.document.close(); w.focus(); w.print(); showToast('🖨️ Print and choose PDF for slide deck', 3000); }
+                else showToast('⚠️ Pop-up blocked — allow popups for PPT export', 3000);
+            }
+            function skillDoubt() {
+                currentMode = 'celebot';
+                activeBot = 'celebot';
+                welcomeMsg.textContent = '🎓 Celebot Doubt Clarifier — type your doubt and Celebot will explain it step by step.';
+                userInput.placeholder = 'Type your doubt here, e.g. "Explain joins in SQL with examples"...';
+                userInput.focus();
+            }
+            function skillSummarize() {
+                currentMode = 'celebot';
+                activeBot = 'celebot';
+                var synopsis = kbContext();
+                appendMessage('user', 'Summarize the current learning content for me.');
+                askCelebot('Please summarize the key units and topics available in this learning website in a clear, digestible way for a learner.');
+            }
+            var TEXT_PDF_TEMPLATE = 'Celebot Study Notes\n\nTopic: [Your Topic]\nUnit: [Unit Name]\n\nKey Points:\n- Point 1\n- Point 2\n- Point 3\n\nSummary:\nWrite a short summary here.';
+            var TEXT_PPT_TEMPLATE = 'Celebot Lecture\n\nIntroduction\n\nKey Concept 1 with brief explanation\n\nKey Concept 2 with brief explanation\n\nSummary and Key Takeaways';
+
+            document.getElementById('skillPdf').addEventListener('click', function () { appendMessage('user', '📄 Create a PDF from my notes'); showToast('Opening print dialog — choose "Save as PDF"', 2500); skillCreatePdf(); });
+            document.getElementById('skillPpt').addEventListener('click', function () { appendMessage('user', '📊 Create a PPT/slide deck from my notes'); showToast('Opening print dialog for slides', 2500); skillCreatePpt(); });
+            document.getElementById('skillDoubt').addEventListener('click', skillDoubt);
+            document.getElementById('skillReadPdf').addEventListener('click', function () { celebotFileInput.click(); });
+            document.getElementById('skillReadPpt').addEventListener('click', function () { celebotFileInput.click(); });
+            document.getElementById('skillSummarize').addEventListener('click', skillSummarize);
+            celebotFileInput.addEventListener('change', function (e) { if (e.target.files.length) handleCelebotFile(e.target.files[0]); e.target.value = ''; });
+
+            // ══════════════════════ CODE RUN / EDITOR ══════════════════════
+            var TEMPLATES = {
+                fullstack: '// Full Stack (Express + MongoDB) code goes here, or open Celebot to learn.',
+                html: '<!DOCTYPE html><html><head><style>body{font-family:system-ui;padding:2rem;background:#1a1a2e;color:#e0e0f0}button{background:#6c8cff;color:#fff;border:none;padding:.5rem 1.5rem;border-radius:30px;cursor:pointer}</style></head><body><h1>Hello!</h1><button onclick="alert(\'Hi\')">Click</button></body></html>',
+                css: 'body { font-family: system-ui; background: #f0f2f7; padding: 2rem; }\n.card { background: #fff; border-radius: 12px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }',
+                js: 'console.log("Hello from WTUT!");\nconst x = 5;\nconsole.log(x * 2);',
+                ts: 'interface Point { x: number; y: number; }\nconst p: Point = { x: 10, y: 20 };\nconsole.log(p);',
+                sql: 'SELECT * FROM users;\n-- write your SQL here',
+                nosql: 'db.users.find({ age: { $gt: 18 } });',
+                py: 'print("Hello from Python!")\n\ndef add(a, b):\n    return a + b\n\nprint(add(3, 4))'
+            };
+            codeTextarea.value = TEMPLATES.html;
+            langIndicator.textContent = 'HTML'; langIndicator.className = 'lang-indicator html';
+
+            async function initPyodide() {
+                if (pyodideReady || isPyodideLoading) return;
+                isPyodideLoading = true;
+                try {
+                    pyLoading.classList.add('show');
+                    pyodideInstance = await loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.26.1/full/' });
+                    pyodideReady = true;
+                    pyLoading.classList.remove('show');
+                    showToast('✅ Python ready', 2000);
+                } catch (e) { pyLoading.classList.remove('show'); pyodideReady = false; showToast('⚠️ Python load failed', 3000); }
+                finally { isPyodideLoading = false; }
+            }
+            setTimeout(initPyodide, 3000);
+
+            async function runPython(code) {
+                if (!pyodideReady) { await initPyodide(); if (!pyodideReady) { showToast('⚠️ Python runtime not available', 3000); return; } }
+                previewPlaceholder.style.display = 'none'; previewIframe.style.display = 'none'; docViewer.style.display = 'none'; pyOutputContainer.classList.add('show');
+                pyOutput.className = 'py-output'; pyOutput.textContent = '⏳ Executing...'; pyExecutionTime.textContent = '';
+                var start = performance.now(); var output = '';
+                try {
+                    await pyodideInstance.runPythonAsync(code, { stdout: { write: function (t) { output += t; } } });
+                    var ms = ((performance.now() - start) / 1000).toFixed(3);
+                    pyOutput.className = 'py-output success';
+                    pyOutput.textContent = output || '✅ Executed successfully!';
+                    pyExecutionTime.textContent = '⏱️ ' + ms + 's';
+                } catch (e) {
+                    pyOutput.className = 'py-output error';
+                    pyOutput.textContent = '❌ ' + e.toString().replace(/Traceback.*?\n/g, '');
+                    pyExecutionTime.textContent = '';
+                }
+            }
+
+            function runCode() {
+                var code = codeTextarea.value;
+                if (!code || code.trim().length < 5) { showToast('⚠️ Write some code first', 2000); return; }
+                var isPy = currentMode === 'py' || /def |import |print\(|class |from |try:|except /.test(code);
+                if (isPy) { runPython(code); return; }
+                var isHtml = /<html|<!DOCTYPE|<div|<body/i.test(code);
+                var htmlContent;
+                if (isHtml) htmlContent = code;
+                else {
+                    var lang = currentMode === 'ts' ? 'TS' : (currentMode === 'sql' ? 'SQL' : 'JS');
+                    htmlContent = '<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:system-ui;padding:2rem;background:#1a1a2e;color:#e0e0f0}</style></head><body><h3>⚡ ' + lang + ' Output</h3><div id="out" style="background:rgba(0,0,0,.3);padding:.5rem;border-radius:8px;white-space:pre-wrap;color:#34d399">✅ Code executed. See console (F12).</div><script>try{var logs=[];var ol=console.log;console.log=function(){logs.push([].slice.call(arguments).join(" "));ol.apply(null,arguments)};' + code + ';if(logs.length)document.getElementById("out").textContent=logs.join("\\n")}catch(e){document.getElementById("out").textContent="❌ "+e.message}<\/script></body></html>';
+                }
+                previewPlaceholder.style.display = 'none'; docViewer.style.display = 'none'; pyOutputContainer.classList.remove('show');
+                previewIframe.style.display = 'block';
+                var blob = new Blob([htmlContent], { type: 'text/html' });
+                var url = URL.createObjectURL(blob);
+                previewIframe.src = url;
+                setTimeout(function () { URL.revokeObjectURL(url); }, 10000);
+                showToast('✅ Code executed!', 1500);
+            }
+            runBtn.addEventListener('click', runCode);
+            document.addEventListener('keydown', function (e) { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); runCode(); } });
+
+            function exportCode() {
+                var code = codeTextarea.value;
+                if (!code.trim()) { showToast('⚠️ No code to export', 2000); return; }
+                var extMap = { html: 'html', css: 'css', js: 'js', ts: 'ts', sql: 'sql', nosql: 'js', fullstack: 'js', py: 'py', celebot: 'txt' };
+                var ext = extMap[currentMode] || 'txt';
+                var blob = new Blob([code], { type: 'text/plain' });
+                var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'code.' + ext; a.click();
+                showToast('✅ Exported code.' + ext, 2000);
+            }
+            exportBtn.addEventListener('click', exportCode);
+            readBtn.addEventListener('click', function () { fileInput.click(); });
+            formatBtn.addEventListener('click', function () { codeTextarea.value = codeTextarea.value.split('\n').map(function (l) { return l.trimEnd(); }).join('\n'); showToast('✨ Formatted', 1500); });
+            clearBtn.addEventListener('click', function () { if (confirm('Clear editor?')) { codeTextarea.value = ''; showToast('🗑️ Cleared', 1500); } });
+
+            // ══════════════════════ FILE DROP ══════════════════════
+            fileDropZone.addEventListener('click', function () { fileInput.click(); });
+            fileDropZone.addEventListener('dragover', function (e) { e.preventDefault(); fileDropZone.classList.add('dragover'); });
+            fileDropZone.addEventListener('dragleave', function () { fileDropZone.classList.remove('dragover'); });
+            fileDropZone.addEventListener('drop', function (e) { e.preventDefault(); fileDropZone.classList.remove('dragover'); if (e.dataTransfer.files.length) handleDropFile(e.dataTransfer.files[0]); });
+            fileInput.addEventListener('change', function (e) { if (e.target.files.length) handleDropFile(e.target.files[0]); e.target.value = ''; });
+            function handleDropFile(file) {
+                var ext = file.name.split('.').pop().toLowerCase();
+                if (ext === 'pdf' || ext === 'pptx' || ext === 'ppt') { handleCelebotFile(file); return; }
+                var reader = new FileReader();
+                reader.onload = function (e) { codeTextarea.value = e.target.result; showToast('📂 Loaded ' + file.name, 2000); };
+                reader.readAsText(file);
+            }
+
+            // ══════════════════════ INIT ══════════════════════
+            setupPdfJs();
+            buildKnowledgeBase().then(function () {
+                console.log('🔐 Celebot encrypted knowledgebase ready (' + KB_META.subjects + ' subjects, ' + KB_META.units + ' units)');
+            }).catch(function (e) { console.warn('KB build deferred:', e); });
+
+            console.log('🎓 Celebot learning assistant loaded');
+            console.log('🔑 BYOK:', OPENROUTER_KEY ? 'Set' : 'Not set — enter key above');
+            console.log('🔐 Encrypted KB:', localStorage.getItem('celebot_kb') ? 'stored' : 'pending');
+            console.log('⚙️ Configure via Config button or Celebot tab');
+        })();
+    </script>
+</body>
+</html>
