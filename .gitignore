@@ -1,1 +1,6 @@
-.vercel
+node_modules/
+.teddy-memory/
+.tmp/
+.vercel/
+*.log
+.DS_Store

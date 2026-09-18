@@ -1,14 +1,21 @@
 {
-  "name": "mtech-cse-app",
+  "name": "teddy-techlearn",
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "scripts": {
+    "verify": "node scripts/verify.mjs",
+    "build:index": "node scripts/build-index.mjs",
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
   "dependencies": {
     "@opencode-ai/plugin": "^1.0.0",
     "pdf-parse": "^1.1.1",
     "mammoth": "^1.8.0",
     "xlsx": "^0.18.5",
     "jszip": "^3.10.1",
-    "cheerio": "^1.0.0"
+    "cheerio": "^1.0.0",
+    "neo4j-driver": "^5.25.0"
   }
 }

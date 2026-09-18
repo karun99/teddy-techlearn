@@ -1,8 +1,16 @@
 {
-  "name": "m.tech",
+  "name": "teddy-techlearn",
   "framework": null,
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/chat.js": { "maxDuration": 30 },
+    "api/quiz.js": { "maxDuration": 30 },
+    "api/notes.js": { "maxDuration": 30 },
+    "api/rag.js": { "maxDuration": 30 },
+    "api/learner.js": { "maxDuration": 30 },
+    "api/health.js": { "maxDuration": 10 }
+  },
   "headers": [
     {
       "source": "/(.*)",

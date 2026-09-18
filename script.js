@@ -644,8 +644,29 @@ document.addEventListener('DOMContentLoaded', () => {
   AppNav.init();
   MermaidControl.init();
   // ContentProtection.init(true); // uncomment to enable
-  CelebotWidget.init();
+  // Teddy × TechLearn: inject the Teddy widget (async, non-blocking) and
+  // disable the legacy Celebot widget. HTML files stay untouched (FR-105).
+  TeddyLoader.init();
+  if (typeof CelebotWidget !== 'undefined') { /* legacy celebot disabled — see TeddyLoader */ }
 });
+
+/* ============================ Teddy × TechLearn Widget Loader ============================ */
+const TeddyLoader = (() => {
+  function init() {
+    if (document.getElementById('twFab')) return;
+    // Hide legacy Celebot DOM (present on all generated pages).
+    document.querySelectorAll('.celebot-fab, .celebot-widget').forEach(function (n) { n.remove(); });
+    var s = document.createElement('script');
+    s.src = 'teddy/teddy-widget.js';
+    s.async = true;
+    s.defer = true;
+    s.onload = function () {
+      if (window.TeddyWidget && typeof window.TeddyWidget.init === 'function') window.TeddyWidget.init();
+    };
+    document.head.appendChild(s);
+  }
+  return { init: init };
+})();
 
 /* ============================ Celebot AI Assistant Widget ============================ */
 const CelebotWidget = (() => {
