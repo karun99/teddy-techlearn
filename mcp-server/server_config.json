@@ -1,0 +1,21 @@
+{
+  "app": {
+    "name": "teddy-techlearn",
+    "version": "1.0.0",
+    "description": "Teddy \u00d7 TechLearn \u2014 AI-enhanced M.Tech CSE Learning Hub (JNTU Kakinada). TechLearn static site + Teddy AI study companion (chat, timed quiz, notes, persistent learner graph), Vercel-ready."
+  },
+  "stack": "node",
+  "routes": [],
+  "pages": [],
+  "base_url": "http://localhost:3000",
+  "module": null,
+  "scripts": {
+    "verify": "node scripts/verify.mjs",
+    "build:index": "node scripts/build-index.mjs",
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "server": "mcp-server/server.mjs",
+  "runner": "node",
+  "runner_cmd": "node"
+}

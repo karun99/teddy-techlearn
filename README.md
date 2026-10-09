@@ -46,3 +46,23 @@ See **[DEPLOY.md](./DEPLOY.md)** for env vars (`GEMINI_API_KEY`, optional `NEO4J
 - TechLearn (static hub + syllabus data): https://github.com/karun99/techlearn
 - Duet / Digital-Twin Technology (persona & pedagogy research): https://github.com/nsktech994/Duet--Digital-Twin-Technology
 - Teddy persona: originally devised with my "Teddy" teacher-companion concept; this build is a fresh, original implementation of that persona in a bespoke stack.
+
+## MCP server
+
+This application ships a dependency-free [Model Context Protocol](https://modelcontextprotocol.io)
+server (`mcp-server/server.mjs`) exposing its core operations to agentic clients.
+It speaks JSON-RPC 2.0 over stdio and adds no runtime dependencies.
+
+Add the repository's [`.mcp.json`](.mcp.json) to your MCP client, or run:
+
+```bash
+node mcp-server/server.mjs
+```
+
+Protocol smoke tests:
+
+```bash
+python3 -m unittest discover -s tests -p "test_mcp_server.py" -v
+```
+
+See [docs/MCP.md](docs/MCP.md) and [mcp-server/README.md](mcp-server/README.md).
