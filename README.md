@@ -46,3 +46,15 @@ See **[DEPLOY.md](./DEPLOY.md)** for env vars (`GEMINI_API_KEY`, optional `NEO4J
 - TechLearn (static hub + syllabus data): https://github.com/karun99/techlearn
 - Duet / Digital-Twin Technology (persona & pedagogy research): https://github.com/nsktech994/Duet--Digital-Twin-Technology
 - Teddy persona: originally devised with my "Teddy" teacher-companion concept; this build is a fresh, original implementation of that persona in a bespoke stack.
+
+## MCP Server
+
+This repository ships a dependency-free [Model Context Protocol](https://modelcontextprotocol.io)
+stdio server so assistants, agents and [glama.ai](https://glama.ai) can inspect the project.
+
+```bash
+node mcp/server.js
+```
+
+Tools: `repo_info`, `list_files`, `read_file`, `search`, `health`. Standard library only — no
+installation or dependencies required. Listing metadata is declared in [`glama.json`](glama.json).
